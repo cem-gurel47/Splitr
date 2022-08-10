@@ -1,6 +1,9 @@
-import { Box, HStack, Icon, Text, Pressable } from "native-base";
+import React, { useState, useEffect } from "react";
+import { Box, HStack, Icon, Text, Pressable, Button } from "native-base";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { StyleSheet } from "react-native";
 
 type ScanBarcodeNavigationProp = {
   navigate: (name: string) => void;
@@ -8,8 +11,28 @@ type ScanBarcodeNavigationProp = {
 
 export default function ScanBillBox() {
   const navigation = useNavigation<ScanBarcodeNavigationProp>();
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getBarCodeScannerPermissions();
+  }, []);
+
   return (
-    <Pressable onPress={() => navigation.navigate("Scan Barcode")}>
+    <Pressable
+      onPress={() => {
+        if (hasPermission) {
+          navigation.navigate("Scan Barcode");
+        } else {
+          alert("You need to grant permission to use the barcode scanner");
+        }
+      }}
+    >
       <Box
         mb={5}
         bg={{
@@ -42,6 +65,9 @@ export default function ScanBillBox() {
             color="warmGray.50"
           />
         </HStack>
+        {scanned && (
+          <Button onPress={() => setScanned(false)}>Press to scan again</Button>
+        )}
       </Box>
     </Pressable>
   );
