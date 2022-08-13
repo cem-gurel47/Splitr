@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@screens/Home";
-import ScanBarcodeScreen from "@screens/ScanBarcode";
+import FinalReportScreen from "@screens/FinalReport";
 import AddManuallyScreen from "@screens/AddManually";
 const Stack = createNativeStackNavigator();
 
@@ -32,8 +32,8 @@ export default function App() {
       >
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Scan Barcode" component={ScanBarcodeScreen} />
-          <Stack.Screen name="Add Manually" component={AddManuallyScreen} />
+          <Stack.Screen name="Final Report" component={FinalReportScreen} />
+          <Stack.Screen name="John Doe" component={AddManuallyScreen} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>

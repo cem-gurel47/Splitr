@@ -2,14 +2,17 @@ import { Box, HStack, Icon, Text, Pressable } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-type AddManullyNavigationProp = {
+type PersonBoxProps = {
   navigate: (name: string) => void;
+  name: string;
+  amount: number;
+  currency: "USD" | "CAD" | "TR" | "EUR" | "GBP" | "JPY" | "AUD" | "NZD";
 };
 
-export default function AddManuallyBox() {
-  const navigation = useNavigation<AddManullyNavigationProp>();
+export default function PersonBox({ name, amount, currency }: PersonBoxProps) {
+  const navigation = useNavigation<PersonBoxProps>();
   return (
-    <Pressable onPress={() => navigation.navigate("Add Manually")}>
+    <Pressable onPress={() => navigation.navigate("John Doe")}>
       <Box
         mb={5}
         _light={{
@@ -35,12 +38,17 @@ export default function AddManuallyBox() {
       >
         <HStack alignItems="center" justifyContent="center" space={2}>
           <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
-            Add manually
+            {name}
+          </Text>
+        </HStack>
+        <HStack alignItems="center" justifyContent="center" space={0}>
+          <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
+            {amount}
           </Text>
           <Icon
             size="2xl"
             as={MaterialIcons}
-            name="calculate"
+            name="attach-money"
             color="warmGray.50"
           />
         </HStack>
