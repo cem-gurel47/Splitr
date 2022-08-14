@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { NativeBaseProvider, extendTheme } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
@@ -6,12 +7,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
 import AddManuallyScreen from "@screens/PersonExpenses";
+import { ExpenseProvider } from "@contexts/ExpenseContext";
+import * as SQLite from "expo-sqlite";
 
 export type StackParamList = {
   Home: undefined;
   "Final Report": undefined;
   "Person Expenses": {
     personName: string;
+    expenses: {
+      description: string;
+      amount: number;
+    }[];
   };
 };
 
@@ -29,6 +36,23 @@ type MyThemeType = typeof theme;
 declare module "native-base" {
   interface ICustomTheme extends MyThemeType {}
 }
+
+const openDatabase = () => {
+  if (Platform.OS === "web") {
+    return {
+      transaction: () => {
+        return {
+          executeSql: () => {},
+        };
+      },
+    };
+  }
+  const db = SQLite.openDatabase("db.db");
+  return db;
+};
+
+export const db = openDatabase();
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -39,11 +63,16 @@ export default function App() {
           },
         }}
       >
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Final Report" component={FinalReportScreen} />
-          <Stack.Screen name="Person Expenses" component={AddManuallyScreen} />
-        </Stack.Navigator>
+        <ExpenseProvider db={db}>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Final Report" component={FinalReportScreen} />
+            <Stack.Screen
+              name="Person Expenses"
+              component={AddManuallyScreen}
+            />
+          </Stack.Navigator>
+        </ExpenseProvider>
       </NativeBaseProvider>
     </NavigationContainer>
   );

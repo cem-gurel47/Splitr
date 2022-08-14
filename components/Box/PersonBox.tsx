@@ -13,15 +13,20 @@ type PersonBoxProps = {
   name: string;
   amount: number;
   currency: string;
+  expenses: {
+    description: string;
+    amount: number;
+  }[];
 };
 
-export default function PersonBox({ name, amount }: PersonBoxProps) {
+export default function PersonBox({ name, amount, expenses }: PersonBoxProps) {
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() =>
         navigation.navigate("Person Expenses", {
           personName: name,
+          expenses: expenses,
         })
       }
     >

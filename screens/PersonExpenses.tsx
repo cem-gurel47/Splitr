@@ -6,26 +6,11 @@ import PaymentInfo from "@components/Box/PersonExpensesBox";
 import DeleteExpenseButton from "@components/Buttons/DeleteExpenseButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-const PAYMENT_DATA = [
-  {
-    description: "Kira",
-    amount: 1500.25,
-  },
-  {
-    description: "Su Faturasi",
-    amount: 45.75,
-  },
-  {
-    description: "Dogalgaz Faturasi",
-    amount: 65.25,
-  },
-];
-
 export default function PersonExpenses() {
   const navigation = useNavigation();
   const route = useRoute();
   //@ts-ignore
-  const { personName } = route.params;
+  const { personName, expenses } = route.params;
   navigation.setOptions({
     headerTitle: personName,
   });
@@ -33,7 +18,7 @@ export default function PersonExpenses() {
 
   return (
     <Layout>
-      {PAYMENT_DATA.map((payment) => (
+      {expenses.map((payment: { description: string; amount: number }) => (
         <HStack alignItems="center" justifyContent="space-between">
           <PaymentInfo
             onPress={() => setShowDeleteButton(!showDeleteButton)}
@@ -52,7 +37,15 @@ export default function PersonExpenses() {
         </Text>
         <HStack alignItems="center">
           <Text fontSize="xl" fontWeight="bold">
-            {PAYMENT_DATA.reduce((acc, payment) => acc + payment.amount, 0)}
+            {expenses.reduce(
+              (
+                acc: number,
+                payment: {
+                  amount: number;
+                }
+              ) => acc + payment.amount,
+              0
+            )}
           </Text>
           <Icon
             as={MaterialIcons}

@@ -1,4 +1,4 @@
-import { Box } from "native-base";
+import { Box, ScrollView } from "native-base";
 
 type Props = {
   children: React.ReactNode;

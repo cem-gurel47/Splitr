@@ -1,34 +1,25 @@
-import React from "react";
-import { useDisclose, Text, Center } from "native-base";
+import React, { useContext } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
+import { useDisclose, Text, Center, ScrollView } from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
-import { useNavigation } from "@react-navigation/native";
-
-const PERSON_DATA = [
-  {
-    id: 1,
-    name: "John Doe",
-    amount: 100,
-    currency: "USD",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    amount: 200,
-    currency: "USD",
-  },
-];
-
-type NavigationProps = {
-  navigate: (name: string) => void;
-};
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
-  const navigation = useNavigation<NavigationProps>();
+  const { expenses, loading } = useContext(ExpenseContext);
 
-  if (PERSON_DATA.length === 0) {
+  if (loading) {
+    return (
+      <Layout>
+        <Center>
+          <Text>Loading...</Text>
+        </Center>
+      </Layout>
+    );
+  }
+
+  if (expenses.length === 0) {
     return (
       <Layout>
         <Center backgroundColor="blueGray.300" flex={1}>
@@ -50,14 +41,17 @@ export default function Home() {
         }
       }}
     >
-      {PERSON_DATA.map((person) => (
-        <PersonBox
-          name={person.name}
-          amount={person.amount}
-          currency="USD"
-          key={person.id}
-        />
-      ))}
+      <ScrollView>
+        {expenses.map((person) => (
+          <PersonBox
+            name={person.name}
+            amount={person.totalAmount}
+            currency="USD"
+            expenses={person.expenses}
+            key={person.id}
+          />
+        ))}
+      </ScrollView>
       <HomeStagger isOpen={isOpen} onToggle={onToggle} />
     </Layout>
   );
