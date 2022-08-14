@@ -7,10 +7,14 @@ import {
   Input,
   Select,
   InputRightAddon,
-  KeyboardAvoidingView,
 } from "native-base";
 
-function Example({ modalVisible, setModalVisible }) {
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function AddExpenseModal({ modalVisible, setModalVisible }: Props) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   return (
@@ -84,4 +88,4 @@ function Example({ modalVisible, setModalVisible }) {
   );
 }
 
-export default Example;
+export default AddExpenseModal;

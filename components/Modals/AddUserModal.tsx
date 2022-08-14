@@ -1,7 +1,12 @@
 import React, { useRef } from "react";
 import { Modal, Button, FormControl, Input } from "native-base";
 
-function Example({ modalVisible, setModalVisible }) {
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function AddUserModal({ modalVisible, setModalVisible }: Props) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   return (
@@ -47,4 +52,4 @@ function Example({ modalVisible, setModalVisible }) {
   );
 }
 
-export default Example;
+export default AddUserModal;

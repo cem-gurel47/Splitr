@@ -3,14 +3,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 type PersonBoxProps = {
-  navigate: (name: string) => void;
   name: string;
   amount: number;
-  currency: "USD" | "CAD" | "TR" | "EUR" | "GBP" | "JPY" | "AUD" | "NZD";
+  currency: string;
+};
+
+type NavigationProps = {
+  navigate: (name: string) => void;
 };
 
 export default function PersonBox({ name, amount, currency }: PersonBoxProps) {
-  const navigation = useNavigation<PersonBoxProps>();
+  const navigation = useNavigation<NavigationProps>();
   return (
     <Pressable onPress={() => navigation.navigate("John Doe")}>
       <Box

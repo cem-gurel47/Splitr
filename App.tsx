@@ -6,7 +6,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
 import AddManuallyScreen from "@screens/AddManually";
-const Stack = createNativeStackNavigator();
+
+type StackParamList = {
+  Home: undefined;
+  "Final Report": undefined;
+  "John Doe": undefined;
+};
+
+const Stack = createNativeStackNavigator<StackParamList>();
 
 // Define the config
 const config = {

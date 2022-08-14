@@ -19,22 +19,28 @@ import {
 import PersonBox from "@components/Box/PersonBox";
 import DeleteAllUsersAlert from "@components/Alerts/DeleteAllUsersAlert";
 import DeleteAllExpensesAlert from "@components/Alerts/DeleteAllExpensesAlert";
-import AddUserAlert from "@components/Alerts/AddUserAlert";
-import AddExpenseAlert from "@components/Alerts/AddExpenseAlert";
+import AddUserAlert from "@components/Modals/AddUserModal";
+import AddExpenseAlert from "@components/Modals/AddExpenseModal";
 import { useNavigation } from "@react-navigation/native";
 
 const PERSON_DATA = [
   {
+    id: 1,
     name: "John Doe",
     amount: 100,
     currency: "USD",
   },
   {
+    id: 2,
     name: "Jane Doe",
     amount: 200,
     currency: "USD",
   },
 ];
+
+type NavigationProps = {
+  navigate: (name: string) => void;
+};
 
 export default function Home() {
   const [isDeleteUsersAlertVisible, setIsDeleteUsersAlertVisible] =
@@ -45,7 +51,7 @@ export default function Home() {
   const [isAddExpenseAlertVisible, setIsAddExpenseAlertVisible] =
     useState(false);
   const { isOpen, onToggle } = useDisclose();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
 
   if (PERSON_DATA.length === 0) {
     return (
@@ -104,7 +110,12 @@ export default function Home() {
       }}
     >
       {PERSON_DATA.map((person) => (
-        <PersonBox name={person.name} amount={person.amount} currency="USD" />
+        <PersonBox
+          name={person.name}
+          amount={person.amount}
+          currency="USD"
+          key={person.id}
+        />
       ))}
       <Box
         style={{

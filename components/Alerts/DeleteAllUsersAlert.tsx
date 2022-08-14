@@ -1,7 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Center, Button, AlertDialog } from "native-base";
 
-const Example = ({ isOpen, setIsOpen }) => {
+type Props = {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const DeleteAllUsersAlert = ({ isOpen, setIsOpen }: Props) => {
   const onClose = () => setIsOpen(false);
 
   const cancelRef = useRef(null);
@@ -40,4 +45,4 @@ const Example = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default Example;
+export default DeleteAllUsersAlert;
