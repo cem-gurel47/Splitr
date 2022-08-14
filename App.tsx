@@ -5,12 +5,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
-import AddManuallyScreen from "@screens/AddManually";
+import AddManuallyScreen from "@screens/PersonExpenses";
 
-type StackParamList = {
+export type StackParamList = {
   Home: undefined;
   "Final Report": undefined;
-  "John Doe": undefined;
+  "Person Expenses": {
+    personName: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -40,7 +42,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Final Report" component={FinalReportScreen} />
-          <Stack.Screen name="John Doe" component={AddManuallyScreen} />
+          <Stack.Screen name="Person Expenses" component={AddManuallyScreen} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>
