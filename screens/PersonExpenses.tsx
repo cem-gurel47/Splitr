@@ -1,31 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, Icon, HStack, Divider } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Layout from "@components/Box/Layout";
-import PaymentInfo from "@components/Box/PersonExpensesBox";
+import PersonExpensesBox from "@components/Box/PersonExpensesBox";
 import DeleteExpenseButton from "@components/Buttons/DeleteExpenseButton";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { Person } from "@models/person";
 
 export default function PersonExpenses() {
   const navigation = useNavigation();
-  const route = useRoute();
-  //@ts-ignore
-  const { personName, expenses } = route.params;
-  navigation.setOptions({
-    headerTitle: personName,
-  });
+  const route: RouteProp<{
+    params: Person;
+  }> = useRoute();
+  const { name, expenses } = route.params;
   const [showDeleteButton, setShowDeleteButton] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: name,
+    });
+  }, []);
 
   return (
     <Layout>
-      {expenses.map((payment: { description: string; amount: number }) => (
+      {expenses.map((expense) => (
         <HStack alignItems="center" justifyContent="space-between">
-          <PaymentInfo
+          <PersonExpensesBox
             onPress={() => setShowDeleteButton(!showDeleteButton)}
-            description={payment.description}
-            amount={payment.amount}
+            expense={expense}
             showDeleteButton={showDeleteButton}
-            key={payment.description}
+            key={expense.description}
           />
           {showDeleteButton && <DeleteExpenseButton />}
         </HStack>

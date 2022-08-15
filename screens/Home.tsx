@@ -7,7 +7,7 @@ import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
-  const { expenses, loading } = useContext(ExpenseContext);
+  const { persons, loading } = useContext(ExpenseContext);
 
   if (loading) {
     return (
@@ -19,7 +19,7 @@ export default function Home() {
     );
   }
 
-  if (expenses.length === 0) {
+  if (persons.length === 0) {
     return (
       <Layout>
         <Center backgroundColor="blueGray.300" flex={1}>
@@ -42,14 +42,8 @@ export default function Home() {
       }}
     >
       <ScrollView>
-        {expenses.map((person) => (
-          <PersonBox
-            name={person.name}
-            amount={person.totalAmount}
-            currency="USD"
-            expenses={person.expenses}
-            key={person.id}
-          />
+        {persons.map((person) => (
+          <PersonBox person={person} key={person.id} />
         ))}
       </ScrollView>
       <HomeStagger isOpen={isOpen} onToggle={onToggle} />

@@ -8,18 +8,14 @@ import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
 import AddManuallyScreen from "@screens/PersonExpenses";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
+import { Expense } from "@models/expense";
+import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
 
 export type StackParamList = {
   Home: undefined;
   "Final Report": undefined;
-  "Person Expenses": {
-    personName: string;
-    expenses: {
-      description: string;
-      amount: number;
-    }[];
-  };
+  "Person Expenses": Person;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();

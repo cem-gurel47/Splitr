@@ -8,28 +8,13 @@ import {
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Person } from "@models/person";
 
-type PersonBoxProps = {
-  name: string;
-  amount: number;
-  currency: string;
-  expenses: {
-    description: string;
-    amount: number;
-  }[];
-};
-
-export default function PersonBox({ name, amount, expenses }: PersonBoxProps) {
+export default function PersonBox({ person }: { person: Person }) {
   const navigation = useNavigation();
+  const { name, totalAmount } = person;
   return (
-    <Pressable
-      onPress={() =>
-        navigation.navigate("Person Expenses", {
-          personName: name,
-          expenses: expenses,
-        })
-      }
-    >
+    <Pressable onPress={() => navigation.navigate("Person Expenses", person)}>
       <PresenceTransition
         visible={true}
         initial={{
@@ -74,7 +59,7 @@ export default function PersonBox({ name, amount, expenses }: PersonBoxProps) {
           </HStack>
           <HStack alignItems="center" justifyContent="center" space={0}>
             <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
-              {amount}
+              {totalAmount}
             </Text>
             <Icon
               size="2xl"

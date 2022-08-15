@@ -1,20 +1,16 @@
 import React from "react";
 import { HStack, Text, Icon, Box, Pressable } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Expense } from "@models/expense";
 
 type Props = {
-  description: string;
-  amount: number;
+  expense: Expense;
   showDeleteButton: boolean;
   onPress: () => void;
 };
 
-const PaymentInfo = ({
-  description,
-  amount,
-  showDeleteButton,
-  onPress,
-}: Props) => {
+const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
+  const { description, amount } = expense;
   return (
     <Pressable
       onLongPress={onPress}
@@ -54,4 +50,4 @@ const PaymentInfo = ({
   );
 };
 
-export default PaymentInfo;
+export default PersonExpensesBox;

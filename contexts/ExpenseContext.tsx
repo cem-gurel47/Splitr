@@ -1,22 +1,15 @@
 import React, { createContext, useState, useEffect } from "react";
 import * as SQLite from "expo-sqlite";
+import { Person } from "@models/person";
 
 type ExpenseContextType = {
   loading: boolean;
-  expenses: {
-    id: number;
-    name: string;
-    totalAmount: number;
-    expenses: {
-      description: string;
-      amount: number;
-    }[];
-  }[];
+  persons: Person[];
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
   loading: true,
-  expenses: [],
+  persons: [],
 });
 
 type Props = {
@@ -31,7 +24,7 @@ type Props = {
 };
 
 export const ExpenseProvider = ({ children, db }: Props) => {
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [persons, setPersons] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const getExpenses = () => {
@@ -52,7 +45,7 @@ export const ExpenseProvider = ({ children, db }: Props) => {
             ),
           };
         });
-        setExpenses(parsedExpensesArray);
+        setPersons(parsedExpensesArray);
         setLoading(false);
       });
     });
@@ -127,13 +120,13 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     setLoading(false);
   }, []);
 
-  console.log(expenses);
+  console.log(persons);
 
   return (
     <ExpenseContext.Provider
       value={{
         loading,
-        expenses,
+        persons,
       }}
     >
       {children}
