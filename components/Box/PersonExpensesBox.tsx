@@ -14,6 +14,7 @@ const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
   const { description, amount } = expense;
   const { currency } = useContext(ExpenseContext);
   const formattedAmount = formatter(amount, currency);
+
   return (
     <Pressable
       onLongPress={onPress}

@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { RefreshControl } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { useDisclose, Text, Center, ScrollView, Spinner } from "native-base";
 import Layout from "@components/Box/Layout";
@@ -7,7 +8,8 @@ import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
-  const { persons, loading } = useContext(ExpenseContext);
+  const { persons, loading, getExpenses } = useContext(ExpenseContext);
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <Layout
@@ -33,7 +35,19 @@ export default function Home() {
         </>
       ) : (
         <>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => {
+                  setRefreshing(true);
+                  console.log(loading);
+                  getExpenses();
+                  setRefreshing(false);
+                }}
+              />
+            }
+          >
             {persons.map((person) => (
               <PersonBox person={person} key={person.id} />
             ))}
