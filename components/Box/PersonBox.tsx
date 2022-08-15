@@ -1,18 +1,14 @@
-import {
-  Box,
-  HStack,
-  Icon,
-  Text,
-  Pressable,
-  PresenceTransition,
-} from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import React, { useContext } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
+import { Box, HStack, Text, Pressable, PresenceTransition } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { Person } from "@models/person";
 
 export default function PersonBox({ person }: { person: Person }) {
   const navigation = useNavigation();
+  const { currencyIcon } = useContext(ExpenseContext);
   const { name, totalAmount } = person;
+
   return (
     <Pressable onPress={() => navigation.navigate("Person Expenses", person)}>
       <PresenceTransition
@@ -57,16 +53,13 @@ export default function PersonBox({ person }: { person: Person }) {
               {name}
             </Text>
           </HStack>
-          <HStack alignItems="center" justifyContent="center" space={0}>
+          <HStack alignItems="center" justifyContent="center" space={2}>
             <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
               {totalAmount}
             </Text>
-            <Icon
-              size="2xl"
-              as={MaterialIcons}
-              name="attach-money"
-              color="warmGray.50"
-            />
+            <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
+              {currencyIcon}
+            </Text>
           </HStack>
         </Box>
       </PresenceTransition>

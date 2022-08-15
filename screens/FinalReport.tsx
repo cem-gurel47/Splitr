@@ -1,8 +1,27 @@
-import { HStack, Text, Icon, Divider, Box } from "native-base";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
+import { HStack, Text, Icon, Divider, Box, Spinner, Center } from "native-base";
 import Layout from "@components/Box/Layout";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { Expense } from "@models/expense";
+import { Person } from "@models/person";
 
-const ReportInfo = ({ color, amount, description, icon }) => {
+const ReportInfo = ({
+  color,
+  description,
+  amount,
+  icon,
+}: {
+  color: string;
+  description: string;
+  amount: number;
+  icon: string | React.ReactNode;
+}) => {
+  const { currency } = useContext(ExpenseContext);
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  });
   return (
     <HStack
       bgColor={color}
@@ -15,34 +34,64 @@ const ReportInfo = ({ color, amount, description, icon }) => {
       <Text fontSize="lg" fontWeight="medium">
         {description}
       </Text>
-      <HStack space={0} alignItems="center">
-        <Text fontSize="lg">{`${amount}`}</Text>
-        {icon}
+      <HStack space={1} alignItems="center">
+        {typeof icon === "string" ? (
+          <Text fontSize="lg">{formatter.format(amount)}</Text>
+        ) : (
+          <>
+            <Text fontSize="lg">{amount}</Text>
+            {icon}
+          </>
+        )}
       </HStack>
     </HStack>
   );
 };
 
 export default function FinalReport() {
+  const { persons, currencyIcon } = useContext(ExpenseContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => {
+      setLoading(true);
+    };
+  }, []);
+
+  const expenseTotal = useMemo(() => {
+    return persons.reduce((acc, person) => {
+      return acc + person.totalAmount;
+    }, 0);
+  }, [persons]);
+  const amountPerUser = useMemo(() => {
+    return expenseTotal / persons.length;
+  }, [expenseTotal, persons]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Center flex={1}>
+          <Spinner color="indigo.500" size="lg" />
+        </Center>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <ReportInfo
         description="Total amount:"
-        amount={300}
+        amount={expenseTotal}
         color="green.400"
-        icon={
-          <Icon
-            as={MaterialIcons}
-            name="attach-money"
-            color="black"
-            size="md"
-            fontWeight="light"
-          />
-        }
+        icon={currencyIcon}
       />
       <ReportInfo
         description="Number of users:"
-        amount={2}
+        amount={persons.length}
         color="red.400"
         icon={
           <Icon
@@ -58,17 +107,9 @@ export default function FinalReport() {
       <Divider backgroundColor="black" marginBottom={2} />
       <ReportInfo
         description="Amount per user:"
-        amount={150}
+        amount={amountPerUser}
         color="blue.400"
-        icon={
-          <Icon
-            as={MaterialIcons}
-            name="attach-money"
-            color="black"
-            size="md"
-            fontWeight="light"
-          />
-        }
+        icon={currencyIcon}
       />
       <Box borderRadius="lg" backgroundColor="orange.400" w="full" p={2}>
         <Text fontWeight="bold" fontSize="lg" marginTop={2}>

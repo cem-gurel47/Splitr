@@ -5,11 +5,15 @@ import { Person } from "@models/person";
 type ExpenseContextType = {
   loading: boolean;
   persons: Person[];
+  currency: string;
+  currencyIcon: React.ReactNode;
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
   loading: true,
   persons: [],
+  currency: "",
+  currencyIcon: null,
 });
 
 type Props = {
@@ -26,6 +30,7 @@ type Props = {
 export const ExpenseProvider = ({ children, db }: Props) => {
   const [persons, setPersons] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currency, setCurrency] = useState("");
 
   const getExpenses = () => {
     setLoading(true);
@@ -66,6 +71,30 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     });
   };
 
+  const createCurrencyTable = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists currency (id integer primary key not null, currency string);"
+      );
+    });
+  };
+
+  const setDbCurrency = (currency: "USD" | "CAD" | "EUR" | "TL" | "") => {
+    db.transaction((tx) => {
+      tx.executeSql("insert into currency (currency) values (?)", [currency]);
+    });
+  };
+
+  const getCurrency = () => {
+    db.transaction((tx) => {
+      tx.executeSql("SELECT * FROM currency", [], (_, { rows }) => {
+        if (rows._array.length > 0) {
+          setCurrency(rows._array[0].currency);
+        }
+      });
+    });
+  };
+
   const addData = (name: string, expensesArray: any[]) => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -86,6 +115,8 @@ export const ExpenseProvider = ({ children, db }: Props) => {
   useEffect(() => {
     setLoading(true);
     createTable();
+    createCurrencyTable();
+    getCurrency();
     // addData("Cem", [
     //   {
     //     description: "Food",
@@ -120,13 +151,24 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     setLoading(false);
   }, []);
 
-  console.log(persons);
+  console.log(persons, currency);
 
   return (
     <ExpenseContext.Provider
       value={{
         loading,
         persons,
+        currency,
+        currencyIcon:
+          currency === "USD"
+            ? "$"
+            : currency === "CAD"
+            ? "C$"
+            : currency === "EUR"
+            ? "€"
+            : currency === "TL"
+            ? "₺"
+            : "",
       }}
     >
       {children}
