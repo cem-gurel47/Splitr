@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { HStack, Text, Icon, Box, Pressable } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Expense } from "@models/expense";
+import formatter from "@utils/formatter";
 
 type Props = {
   expense: Expense;
@@ -12,7 +12,8 @@ type Props = {
 
 const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
   const { description, amount } = expense;
-  const { currencyIcon } = useContext(ExpenseContext);
+  const { currency } = useContext(ExpenseContext);
+  const formattedAmount = formatter(amount, currency);
   return (
     <Pressable
       onLongPress={onPress}
@@ -34,10 +35,7 @@ const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
           </Text>
           <HStack alignItems="center" space={1}>
             <Text fontSize="xl" color="black">
-              {amount}
-            </Text>
-            <Text fontSize="xl" color="black">
-              {currencyIcon}
+              {formattedAmount}
             </Text>
           </HStack>
         </HStack>

@@ -3,10 +3,11 @@ import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Box, HStack, Text, Pressable, PresenceTransition } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { Person } from "@models/person";
+import formatter from "@utils/formatter";
 
 export default function PersonBox({ person }: { person: Person }) {
   const navigation = useNavigation();
-  const { currencyIcon } = useContext(ExpenseContext);
+  const { currency } = useContext(ExpenseContext);
   const { name, totalAmount } = person;
 
   return (
@@ -55,10 +56,7 @@ export default function PersonBox({ person }: { person: Person }) {
           </HStack>
           <HStack alignItems="center" justifyContent="center" space={2}>
             <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
-              {totalAmount}
-            </Text>
-            <Text fontSize="2xl" fontWeight="bold" color="warmGray.50">
-              {currencyIcon}
+              {formatter(totalAmount, currency)}
             </Text>
           </HStack>
         </Box>

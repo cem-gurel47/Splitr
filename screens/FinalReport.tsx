@@ -3,8 +3,7 @@ import { ExpenseContext } from "@contexts/ExpenseContext";
 import { HStack, Text, Icon, Divider, Box, Spinner, Center } from "native-base";
 import Layout from "@components/Box/Layout";
 import { Ionicons } from "@expo/vector-icons";
-import { Expense } from "@models/expense";
-import { Person } from "@models/person";
+import formatter from "@utils/formatter";
 
 const ReportInfo = ({
   color,
@@ -18,10 +17,7 @@ const ReportInfo = ({
   icon: string | React.ReactNode;
 }) => {
   const { currency } = useContext(ExpenseContext);
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-  });
+
   return (
     <HStack
       bgColor={color}
@@ -36,7 +32,7 @@ const ReportInfo = ({
       </Text>
       <HStack space={1} alignItems="center">
         {typeof icon === "string" ? (
-          <Text fontSize="lg">{formatter.format(amount)}</Text>
+          <Text fontSize="lg">{formatter(amount, currency)}</Text>
         ) : (
           <>
             <Text fontSize="lg">{amount}</Text>

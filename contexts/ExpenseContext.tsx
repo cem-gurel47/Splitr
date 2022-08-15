@@ -28,12 +28,11 @@ type Props = {
 };
 
 export const ExpenseProvider = ({ children, db }: Props) => {
-  const [persons, setPersons] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [persons, setPersons] = useState<Person[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("");
 
   const getExpenses = () => {
-    setLoading(true);
     db.transaction((tx) => {
       tx.executeSql("SELECT * FROM persons", [], (_, { rows }) => {
         const parsedExpensesArray = rows._array.map((row) => {
@@ -51,10 +50,8 @@ export const ExpenseProvider = ({ children, db }: Props) => {
           };
         });
         setPersons(parsedExpensesArray);
-        setLoading(false);
       });
     });
-    setLoading(false);
   };
 
   const dropTable = () => {
