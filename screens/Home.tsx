@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl, FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { useDisclose, Text, Center, ScrollView, Spinner } from "native-base";
+import { useDisclose, Text, Center, Spinner } from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
@@ -35,7 +35,10 @@ export default function Home() {
         </>
       ) : (
         <>
-          <ScrollView
+          <FlatList
+            data={persons}
+            renderItem={({ item }) => <PersonBox person={item} />}
+            keyExtractor={(item) => `${item.id}`}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -47,11 +50,7 @@ export default function Home() {
                 }}
               />
             }
-          >
-            {persons.map((person) => (
-              <PersonBox person={person} key={person.id} />
-            ))}
-          </ScrollView>
+          />
           <HomeStagger isOpen={isOpen} onToggle={onToggle} />
         </>
       )}

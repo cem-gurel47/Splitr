@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext, useState } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Center, Button, AlertDialog } from "native-base";
 
 type Props = {
@@ -8,6 +9,8 @@ type Props = {
 
 const DeleteAllUsersAlert = ({ isOpen, setIsOpen }: Props) => {
   const onClose = () => setIsOpen(false);
+  const { deleteEveryPerson } = useContext(ExpenseContext);
+  const [loading, setLoading] = useState(false);
 
   const cancelRef = useRef(null);
   return (
@@ -34,7 +37,15 @@ const DeleteAllUsersAlert = ({ isOpen, setIsOpen }: Props) => {
               >
                 Cancel
               </Button>
-              <Button colorScheme="danger" onPress={onClose}>
+              <Button
+                isLoading={loading}
+                isLoadingText="Deleting"
+                colorScheme="danger"
+                onPress={() => {
+                  deleteEveryPerson();
+                  onClose();
+                }}
+              >
                 Delete
               </Button>
             </Button.Group>

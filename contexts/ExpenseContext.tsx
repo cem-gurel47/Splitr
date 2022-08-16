@@ -1,20 +1,27 @@
 import React, { createContext, useState, useEffect } from "react";
-import { RefreshControl } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { Person } from "@models/person";
 
 type ExpenseContextType = {
   loading: boolean;
   persons: Person[];
+  setPersons: React.Dispatch<React.SetStateAction<Person[]>>;
   currency: string;
   getExpenses: () => void;
+  addNewPerson: (name: string) => void;
+  deleteEveryPerson: () => void;
+  updatePerson: (id: number, name: string, expensesArray: any[]) => void;
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
   loading: true,
   persons: [],
+  setPersons: () => {},
   currency: "",
   getExpenses: () => {},
+  addNewPerson: (name: string) => {},
+  deleteEveryPerson: () => {},
+  updatePerson: (id: number, name: string, expensesArray: any[]) => {},
 });
 
 type Props = {
@@ -85,6 +92,15 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     });
   };
 
+  const addNewPerson = (name: string) => {
+    db.transaction((tx) => {
+      tx.executeSql("insert into persons (data) values (?)", [
+        JSON.stringify({ name, expenses: [] }),
+      ]);
+    });
+    getExpenses();
+  };
+
   const getCurrency = () => {
     db.transaction((tx) => {
       tx.executeSql("SELECT * FROM currency", [], (_, { rows }) => {
@@ -109,6 +125,25 @@ export const ExpenseProvider = ({ children, db }: Props) => {
           // setExpenses(rows._array);
         }
       );
+    });
+  };
+
+  const deleteEveryPerson = () => {
+    db.transaction((tx) => {
+      tx.executeSql("delete from persons", []);
+    });
+    getExpenses();
+  };
+
+  const updatePerson = (id: number, name: string, expensesArray: any[]) => {
+    db.transaction((tx) => {
+      tx.executeSql("update persons set data = ? where id = ?", [
+        JSON.stringify({
+          name,
+          expenses: expensesArray,
+        }),
+        id,
+      ]);
     });
   };
 
@@ -158,8 +193,12 @@ export const ExpenseProvider = ({ children, db }: Props) => {
       value={{
         loading,
         persons,
+        setPersons,
         currency,
         getExpenses,
+        addNewPerson,
+        deleteEveryPerson,
+        updatePerson,
       }}
     >
       {children}

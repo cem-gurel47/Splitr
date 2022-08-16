@@ -1,5 +1,12 @@
-import React, { useRef } from "react";
-import { Modal, Button, FormControl, Input } from "native-base";
+import React, { useRef, useState, useContext } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
+import {
+  Modal,
+  Button,
+  FormControl,
+  Input,
+  WarningOutlineIcon,
+} from "native-base";
 
 type Props = {
   modalVisible: boolean;
@@ -9,6 +16,10 @@ type Props = {
 function AddUserModal({ modalVisible, setModalVisible }: Props) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
+  const { addNewPerson } = useContext(ExpenseContext);
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <Modal
@@ -21,9 +32,22 @@ function AddUserModal({ modalVisible, setModalVisible }: Props) {
           <Modal.CloseButton />
           <Modal.Header>Add New Person</Modal.Header>
           <Modal.Body>
-            <FormControl>
+            <FormControl isInvalid={name.length === 0}>
               <FormControl.Label>Name</FormControl.Label>
-              <Input ref={initialRef} size="2xl" />
+              <Input
+                ref={initialRef}
+                autoFocus
+                autoCapitalize="words"
+                size="2xl"
+                onChange={(e) => {
+                  setName(e.nativeEvent.text);
+                }}
+              />
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size="xs" />}
+              >
+                Name is required
+              </FormControl.ErrorMessage>
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
@@ -38,7 +62,15 @@ function AddUserModal({ modalVisible, setModalVisible }: Props) {
                 Cancel
               </Button>
               <Button
+                isLoading={loading}
+                isLoadingText="Adding"
                 onPress={() => {
+                  if (name.length === 0) {
+                    return;
+                  }
+                  setLoading(true);
+                  addNewPerson(name);
+                  setLoading(false);
                   setModalVisible(false);
                 }}
               >

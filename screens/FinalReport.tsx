@@ -45,13 +45,13 @@ const ReportInfo = ({
 };
 
 export default function FinalReport() {
-  const { persons, currencyIcon } = useContext(ExpenseContext);
+  const { persons } = useContext(ExpenseContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
 
     return () => {
       setLoading(true);
@@ -83,7 +83,7 @@ export default function FinalReport() {
         description="Total amount:"
         amount={expenseTotal}
         color="green.400"
-        icon={currencyIcon}
+        icon="money-icon"
       />
       <ReportInfo
         description="Number of users:"
@@ -105,7 +105,7 @@ export default function FinalReport() {
         description="Amount per user:"
         amount={amountPerUser}
         color="blue.400"
-        icon={currencyIcon}
+        icon="money-icon"
       />
       <Box borderRadius="lg" backgroundColor="orange.400" w="full" p={2}>
         <Text fontWeight="bold" fontSize="lg" marginTop={2}>
