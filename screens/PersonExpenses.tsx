@@ -91,9 +91,6 @@ export default function PersonExpenses() {
         <NoData id={id} />
       ) : (
         <>
-          <Text mb={3} fontSize="xl" fontWeight="bold">
-            Current expenses:
-          </Text>
           <FlatList
             style={{ flexGrow: 0 }}
             data={expenses}
@@ -108,25 +105,35 @@ export default function PersonExpenses() {
                 {showDeleteButton && <DeleteExpenseButton />}
               </HStack>
             )}
+            ListHeaderComponent={() => (
+              <Text mb={3} fontSize="xl" fontWeight="bold">
+                Current expenses:
+              </Text>
+            )}
+            ListFooterComponent={() => (
+              <>
+                <Divider marginTop={2} mb={1} backgroundColor="black" />
+                <HStack justifyContent="space-between">
+                  <Text fontSize="xl" fontWeight="bold">
+                    Total:
+                  </Text>
+                  <HStack alignItems="center">
+                    <Text fontSize="xl" fontWeight="bold">
+                      {formatter(totalAmount, currency)}
+                    </Text>
+                  </HStack>
+                </HStack>
+              </>
+            )}
             keyExtractor={(item) => item.description}
           />
-          <Divider marginTop={2} mb={1} backgroundColor="black" />
-          <HStack justifyContent="space-between">
-            <Text fontSize="xl" fontWeight="bold">
-              Total:
-            </Text>
-            <HStack alignItems="center">
-              <Text fontSize="xl" fontWeight="bold">
-                {formatter(totalAmount, currency)}
-              </Text>
-            </HStack>
-          </HStack>
+
           <Button
             mt={4}
             variant="solid"
             colorScheme="blue"
-            backgroundColor="blue.100"
-            borderRadius="full"
+            backgroundColor="purple.500"
+            borderRadius="md"
             onPress={() => setModalVisible(true)}
             w="100%"
           >
@@ -135,7 +142,7 @@ export default function PersonExpenses() {
               justifyContent="space-between"
               space={2}
             >
-              <Text color="blue.500" fontSize="lg" fontWeight="semibold">
+              <Text color="white" fontSize="lg" fontWeight="semibold">
                 Add Expense
               </Text>
               <Icon
@@ -145,7 +152,7 @@ export default function PersonExpenses() {
                 _dark={{
                   color: "white",
                 }}
-                color="blue.500"
+                color="white"
               />
             </HStack>
           </Button>

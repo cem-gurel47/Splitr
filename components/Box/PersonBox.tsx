@@ -1,8 +1,16 @@
 import React, { useContext } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { Box, HStack, Text, Pressable, PresenceTransition } from "native-base";
+import {
+  Box,
+  HStack,
+  Text,
+  Pressable,
+  PresenceTransition,
+  Icon,
+} from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { Person } from "@models/person";
+import { AntDesign } from "@expo/vector-icons";
 import formatter from "@utils/formatter";
 
 export default function PersonBox({ person }: { person: Person }) {
@@ -27,7 +35,9 @@ export default function PersonBox({ person }: { person: Person }) {
         }}
       >
         <Box
+          position="relative"
           mb={5}
+          mx={6}
           _light={{
             bg: {
               linearGradient: {
@@ -59,6 +69,14 @@ export default function PersonBox({ person }: { person: Person }) {
               {formatter(totalAmount, currency)}
             </Text>
           </HStack>
+          <Icon
+            size="lg"
+            as={<AntDesign name="rightcircleo" />}
+            position="absolute"
+            top="100%"
+            right={4}
+            color="white"
+          />
         </Box>
       </PresenceTransition>
     </Pressable>
