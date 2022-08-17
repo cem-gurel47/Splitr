@@ -69,11 +69,15 @@ export default function PersonExpenses() {
   const route: RouteProp<{
     params: Person;
   }> = useRoute();
-  const { name, expenses, totalAmount, id } = route.params;
+  const { name, id } = route.params;
   const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { currency } = useContext(ExpenseContext);
-  const formattedTotalAmount = formatter(totalAmount, currency);
+  const { currency, persons } = useContext(ExpenseContext);
+  const person = persons.find((person) => person.id === id);
+  const expenses = person?.expenses ?? [];
+  const totalAmount = expenses.reduce((acc, expense) => {
+    return acc + expense.amount;
+  }, 0);
 
   useEffect(() => {
     navigation.setOptions({
@@ -113,7 +117,7 @@ export default function PersonExpenses() {
             </Text>
             <HStack alignItems="center">
               <Text fontSize="xl" fontWeight="bold">
-                {formattedTotalAmount}
+                {formatter(totalAmount, currency)}
               </Text>
             </HStack>
           </HStack>

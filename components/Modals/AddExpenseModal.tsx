@@ -157,6 +157,7 @@ function AddExpenseModal({ modalVisible, setModalVisible, personId }: Props) {
                 }
                 addExpenseToPerson();
                 setIsLoading(false);
+                setModalVisible(false);
               }}
             >
               Save
