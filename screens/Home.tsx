@@ -1,11 +1,20 @@
 import React, { useContext, useState, useMemo } from "react";
 import { RefreshControl, FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { useDisclose, Text, Center, Spinner } from "native-base";
+import {
+  useDisclose,
+  Text,
+  Center,
+  Spinner,
+  VStack,
+  Box,
+  Image,
+} from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
 import formatter from "@utils/formatter";
+import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
@@ -51,36 +60,60 @@ export default function Home() {
       ) : (
         <>
           <FlatList
+            numColumns={2}
             data={persons}
-            renderItem={({ item }) => <PersonBox person={item} />}
+            columnWrapperStyle={{
+              paddingLeft: 25,
+              paddingRight: 25,
+              justifyContent: "space-between",
+            }}
+            renderItem={({ item, index }) => (
+              <PersonBox person={item} index={index} />
+            )}
             stickyHeaderIndices={[0]}
             keyExtractor={(item) => `${item.id}`}
             ListHeaderComponent={() => (
-              <Center
-                style={{
-                  backgroundColor: "#787DE8",
-                }}
-                borderBottomLeftRadius={60}
-                borderBottomRightRadius={60}
-                pt={12}
-                pb={4}
-                px={6}
-                mb={4}
-              >
-                <Text
-                  fontSize="xl"
-                  mb={1}
+              <VStack>
+                <Center
                   style={{
-                    color: "#98C1F7",
+                    backgroundColor: "#787DE8",
                   }}
+                  borderBottomLeftRadius={60}
+                  borderBottomRightRadius={60}
+                  pt={16}
+                  pb={8}
+                  px={6}
+                  mb={4}
                 >
-                  Your total expenses
+                  <Text
+                    fontSize="xl"
+                    mb={1}
+                    style={{
+                      color: "#98C1F7",
+                    }}
+                  >
+                    Your total expenses
+                  </Text>
+                  <Text color="white" fontWeight="extrabold" fontSize="xl">
+                    {formatter(totalExpenses, currency)}
+                  </Text>
+                </Center>
+                <Text
+                  color="black"
+                  fontSize="xl"
+                  fontWeight="bold"
+                  pl={25}
+                  mb={4}
+                >
+                  Track your expenses
                 </Text>
-                <Text color="white" fontWeight="bold" fontSize="xl">
-                  {formatter(totalExpenses, currency)}
-                </Text>
-              </Center>
+              </VStack>
             )}
+            ListFooterComponentStyle={{
+              paddingLeft: 25,
+              paddingRight: 25,
+            }}
+            ListFooterComponent={() => <CalculateBackgroundBox />}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
