@@ -82,7 +82,7 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
     },
     {
       onPress: () => {
-        setIsAddPersonModalVisible(true);
+        navigation.navigate("Add New Person");
       },
       backgroundColor: "teal.400",
       icon: (

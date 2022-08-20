@@ -23,26 +23,13 @@ const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
         onPress();
       }}
     >
-      <Box
-        width="full"
-        backgroundColor="blue.400"
-        p={2}
-        mb={2}
-        borderRadius="md"
-        // bg={{
-        //   linearGradient: {
-        //     colors: ["blue.300", "gray.200"],
-        //     start: [0, 0],
-        //     end: [1, 1],
-        //   },
-        // }}
-      >
+      <Box p={2} mx={3} bgColor="transparent" mb={2}>
         <HStack justifyContent="space-between">
-          <Text fontSize="xl" color="white">
+          <Text fontSize="xl" color="#777CEF">
             {description}
           </Text>
           <HStack alignItems="center" space={1}>
-            <Text fontSize="xl" color="white" fontWeight="bold">
+            <Text fontSize="xl" color="#777CEF" fontWeight="bold">
               {formattedAmount}
             </Text>
           </HStack>

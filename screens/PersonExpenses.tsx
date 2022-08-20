@@ -12,6 +12,7 @@ import AnimatedLottieView from "lottie-react-native";
 import ScanningAnimation from "../assets/scanning.json";
 import { Ionicons } from "@expo/vector-icons";
 import { AddExpenseModal } from "@components/Modals";
+import PersonExpensesHeader from "@components/Headers/PersonExpensesHeader";
 
 const NoData = ({ id }: { id: number }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -86,7 +87,13 @@ export default function PersonExpenses() {
   }, []);
 
   return (
-    <Layout>
+    <Layout
+      style={{
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+      }}
+    >
       {expenses.length === 0 ? (
         <NoData id={id} />
       ) : (
@@ -105,14 +112,10 @@ export default function PersonExpenses() {
                 {showDeleteButton && <DeleteExpenseButton />}
               </HStack>
             )}
-            ListHeaderComponent={() => (
-              <Text mb={3} fontSize="xl" fontWeight="bold">
-                Current expenses:
-              </Text>
-            )}
+            ListHeaderComponent={() => <PersonExpensesHeader name={name} />}
             ListFooterComponent={() => (
               <>
-                <Divider marginTop={2} mb={1} backgroundColor="black" />
+                {/* <Divider marginTop={2} mb={1} backgroundColor="black" mx={4} />
                 <HStack justifyContent="space-between">
                   <Text fontSize="xl" fontWeight="bold">
                     Total:
@@ -122,7 +125,7 @@ export default function PersonExpenses() {
                       {formatter(totalAmount, currency)}
                     </Text>
                   </HStack>
-                </HStack>
+                </HStack> */}
               </>
             )}
             keyExtractor={(item) => item.description}
@@ -133,9 +136,10 @@ export default function PersonExpenses() {
             variant="solid"
             colorScheme="blue"
             backgroundColor="purple.500"
-            borderRadius="md"
+            borderRadius="lg"
+            shadow={4}
             onPress={() => setModalVisible(true)}
-            w="100%"
+            mx={3}
           >
             <HStack
               alignItems="center"

@@ -1,15 +1,7 @@
 import React, { useContext, useState, useMemo } from "react";
 import { RefreshControl, FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import {
-  useDisclose,
-  Text,
-  Center,
-  Spinner,
-  VStack,
-  Box,
-  Image,
-} from "native-base";
+import { useDisclose, Text, Center, Spinner, VStack } from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";

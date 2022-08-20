@@ -8,7 +8,11 @@ import { AntDesign } from "@expo/vector-icons";
 const CalculateBackgroundBox = () => {
   const navigation = useNavigation();
   return (
-    <Pressable onPress={() => navigation.navigate("Final Report")}>
+    <Pressable
+      onPress={() => {
+        navigation.navigate("Final Report");
+      }}
+    >
       <Box justifyContent="center" alignItems="center" position="relative">
         <Image
           source={BG}

@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import React from "react";
 import { Platform } from "react-native";
 import { NativeBaseProvider, extendTheme } from "native-base";
@@ -6,9 +7,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
-import AddManuallyScreen from "@screens/PersonExpenses";
+import PersonExpenses from "@screens/PersonExpenses";
+import AddPerson from "@screens/AddPerson";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
-import { Expense } from "@models/expense";
 import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
 
@@ -16,6 +17,7 @@ export type StackParamList = {
   Home: undefined;
   "Final Report": undefined;
   "Person Expenses": Person;
+  "Add New Person": undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -60,19 +62,16 @@ export default function App() {
         }}
       >
         <ExpenseProvider db={db}>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Final Report" component={FinalReportScreen} />
-            <Stack.Screen
-              name="Person Expenses"
-              component={AddManuallyScreen}
-            />
+            <Stack.Screen name="Person Expenses" component={PersonExpenses} />
+            <Stack.Screen name="Add New Person" component={AddPerson} />
           </Stack.Navigator>
         </ExpenseProvider>
       </NativeBaseProvider>
