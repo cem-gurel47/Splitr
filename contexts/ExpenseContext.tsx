@@ -11,6 +11,8 @@ type ExpenseContextType = {
   addNewPerson: (name: string) => void;
   deleteEveryPerson: () => void;
   updatePerson: (id: number, name: string, expensesArray: any[]) => void;
+  totalAmount: number;
+  amountPerUser: number;
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
@@ -22,6 +24,8 @@ export const ExpenseContext = createContext<ExpenseContextType>({
   addNewPerson: (name: string) => {},
   deleteEveryPerson: () => {},
   updatePerson: (id: number, name: string, expensesArray: any[]) => {},
+  totalAmount: 0,
+  amountPerUser: 0,
 });
 
 type Props = {
@@ -39,6 +43,8 @@ export const ExpenseProvider = ({ children, db }: Props) => {
   const [persons, setPersons] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [amountPerUser, setAmountPerUser] = useState(0);
 
   const getExpenses = () => {
     setLoading(true);
@@ -59,6 +65,15 @@ export const ExpenseProvider = ({ children, db }: Props) => {
           };
         });
         setPersons(parsedExpensesArray);
+
+        const totalAmount = parsedExpensesArray.reduce((acc, person) => {
+          return acc + person.totalAmount;
+        }, 0);
+
+        const amountPerUser = totalAmount / parsedExpensesArray.length;
+
+        setTotalAmount(totalAmount);
+        setAmountPerUser(amountPerUser);
       });
       setLoading(false);
     });
@@ -199,6 +214,8 @@ export const ExpenseProvider = ({ children, db }: Props) => {
         addNewPerson,
         deleteEveryPerson,
         updatePerson,
+        totalAmount,
+        amountPerUser,
       }}
     >
       {children}
