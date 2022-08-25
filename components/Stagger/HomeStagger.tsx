@@ -19,7 +19,6 @@ import {
   DeleteAllExpensesAlert,
   DeleteAllUsersAlert,
 } from "@components/Alerts";
-import { AddExpenseModal, AddUserModal } from "@components/Modals";
 
 type Props = {
   isOpen: boolean;
@@ -55,10 +54,7 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
   const navigation = useNavigation();
   const [isDeleteUsersAlertVisible, setIsDeleteUsersAlertVisible] =
     useState(false);
-  const [isAddPersonModalVisible, setIsAddPersonModalVisible] = useState(false);
   const [isDeleteExpensesAlertVisible, setIsDeleteExpensesAlertVisible] =
-    useState(false);
-  const [isAddExpenseModalVisible, setIsAddExpenseModalVisible] =
     useState(false);
 
   const STAGGER_ITEMS = [
@@ -136,7 +132,7 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
     },
     {
       onPress: () => {
-        setIsAddExpenseModalVisible(true);
+        navigation.navigate("Add New Expense", {});
       },
       backgroundColor: "green.500",
       icon: (
@@ -229,14 +225,6 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
       <DeleteAllExpensesAlert
         isOpen={isDeleteExpensesAlertVisible}
         setIsOpen={setIsDeleteExpensesAlertVisible}
-      />
-      <AddUserModal
-        modalVisible={isAddPersonModalVisible}
-        setModalVisible={setIsAddPersonModalVisible}
-      />
-      <AddExpenseModal
-        modalVisible={isAddExpenseModalVisible}
-        setModalVisible={setIsAddExpenseModalVisible}
       />
     </Box>
   );

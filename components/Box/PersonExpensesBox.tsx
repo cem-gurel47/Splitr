@@ -18,12 +18,12 @@ const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
   return (
     <Pressable
       onLongPress={onPress}
-      width={showDeleteButton ? "90%" : "full"}
+      width={showDeleteButton ? "90%" : "100%"}
       onPress={() => {
         onPress();
       }}
     >
-      <Box p={2} mx={3} bgColor="transparent" mb={2}>
+      <Box p={2} px={0} bgColor="transparent" mb={2}>
         <HStack justifyContent="space-between">
           <Text fontSize="xl" color="#777CEF">
             {description}

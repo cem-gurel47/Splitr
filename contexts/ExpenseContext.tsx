@@ -13,6 +13,11 @@ type ExpenseContextType = {
   updatePerson: (id: number, name: string, expensesArray: any[]) => void;
   totalAmount: number;
   amountPerUser: number;
+  deleteExpense: (
+    description: string,
+    amount: number,
+    personId: number
+  ) => void;
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
@@ -21,11 +26,12 @@ export const ExpenseContext = createContext<ExpenseContextType>({
   setPersons: () => {},
   currency: "",
   getExpenses: () => {},
-  addNewPerson: (name: string) => {},
+  addNewPerson: () => {},
   deleteEveryPerson: () => {},
-  updatePerson: (id: number, name: string, expensesArray: any[]) => {},
+  updatePerson: () => {},
   totalAmount: 0,
   amountPerUser: 0,
+  deleteExpense: () => {},
 });
 
 type Props = {
@@ -162,6 +168,31 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     });
   };
 
+  const deleteExpense = (
+    description: string,
+    amount: number,
+    personId: number
+  ) => {
+    const person = persons.find((p) => p.id === personId);
+    if (person) {
+      const newPersonObject = { ...person };
+      newPersonObject.expenses = newPersonObject.expenses.filter(
+        (expense) =>
+          expense.amount !== amount && expense.description !== description
+      );
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          "update persons set data = ? where id = ?",
+          [JSON.stringify(newPersonObject), personId],
+          () => {
+            getExpenses();
+          }
+        );
+      });
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     createTable();
@@ -216,6 +247,7 @@ export const ExpenseProvider = ({ children, db }: Props) => {
         updatePerson,
         totalAmount,
         amountPerUser,
+        deleteExpense,
       }}
     >
       {children}

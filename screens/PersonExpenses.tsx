@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { Text, HStack, Divider, Center, Icon, Button } from "native-base";
+import { Text, HStack, Center, Icon, Button } from "native-base";
 import Layout from "@components/Box/Layout";
-import PersonExpensesBox from "@components/Box/PersonExpensesBox";
-import DeleteExpenseButton from "@components/Buttons/DeleteExpenseButton";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Person } from "@models/person";
-import formatter from "@utils/formatter";
 import AnimatedLottieView from "lottie-react-native";
 import ScanningAnimation from "../assets/scanning.json";
 import { Ionicons } from "@expo/vector-icons";
-import { AddExpenseModal } from "@components/Modals";
 import PersonExpensesHeader from "@components/Headers/PersonExpensesHeader";
+import PersonExpense from "@components/Box/PersonExpense";
 
 const NoData = ({ id }: { id: number }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
+
   return (
     <Center style={{ flex: 1 }}>
       <Text color="black" fontSize="2xl">
@@ -37,7 +35,11 @@ const NoData = ({ id }: { id: number }) => {
         colorScheme="blue"
         backgroundColor="blue.100"
         borderRadius="full"
-        onPress={() => setModalVisible(true)}
+        onPress={() =>
+          navigation.navigate("Add New Expense", {
+            personId: id,
+          })
+        }
         justifyContent="flex-start"
       >
         <HStack alignItems="center" justifyContent="space-between" space={2}>
@@ -55,12 +57,6 @@ const NoData = ({ id }: { id: number }) => {
           />
         </HStack>
       </Button>
-
-      <AddExpenseModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        personId={id}
-      />
     </Center>
   );
 };
@@ -71,14 +67,9 @@ export default function PersonExpenses() {
     params: Person;
   }> = useRoute();
   const { name, id } = route.params;
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const { currency, persons } = useContext(ExpenseContext);
+  const { persons } = useContext(ExpenseContext);
   const person = persons.find((person) => person.id === id);
   const expenses = person?.expenses ?? [];
-  const totalAmount = expenses.reduce((acc, expense) => {
-    return acc + expense.amount;
-  }, 0);
 
   useEffect(() => {
     navigation.setOptions({
@@ -101,16 +92,12 @@ export default function PersonExpenses() {
           <FlatList
             style={{ flexGrow: 0 }}
             data={expenses}
-            renderItem={({ item }) => (
-              <HStack alignItems="center" justifyContent="space-between">
-                <PersonExpensesBox
-                  onPress={() => setShowDeleteButton(!showDeleteButton)}
-                  expense={item}
-                  showDeleteButton={showDeleteButton}
-                  key={item.description}
-                />
-                {showDeleteButton && <DeleteExpenseButton />}
-              </HStack>
+            renderItem={({ item, index }) => (
+              <PersonExpense
+                personId={id}
+                expense={item}
+                key={`${item.description}-${index}`}
+              />
             )}
             ListHeaderComponent={() => <PersonExpensesHeader name={name} />}
             ListFooterComponent={() => (
@@ -128,7 +115,7 @@ export default function PersonExpenses() {
                 </HStack> */}
               </>
             )}
-            keyExtractor={(item) => item.description}
+            keyExtractor={(item, index) => `${item.description}-${index}`}
           />
 
           <Button
@@ -138,7 +125,11 @@ export default function PersonExpenses() {
             backgroundColor="purple.500"
             borderRadius="lg"
             shadow={4}
-            onPress={() => setModalVisible(true)}
+            onPress={() =>
+              navigation.navigate("Add New Expense", {
+                personId: id,
+              })
+            }
             mx={3}
           >
             <HStack
@@ -160,11 +151,6 @@ export default function PersonExpenses() {
               />
             </HStack>
           </Button>
-          <AddExpenseModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            personId={id}
-          />
         </>
       )}
     </Layout>

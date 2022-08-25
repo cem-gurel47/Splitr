@@ -29,7 +29,7 @@ const ReportChart = () => {
         <HStack space={8}>
           {personsWhoPayedMore.map((p, index) => (
             <Box
-              key={p.id}
+              key={`${p.id} -${index}`}
               bgColor={BG_COLORS[p.id % 4]}
               borderTopLeftRadius="xl"
               borderTopRightRadius="xl"
@@ -43,9 +43,9 @@ const ReportChart = () => {
         </HStack>
 
         <HStack space={4} pl={6}>
-          {personsWhoPayedLess.map((p) => (
+          {personsWhoPayedLess.map((p, index) => (
             <Box
-              key={p.id}
+              key={`${p.id}-${index}`}
               bgColor={BG_COLORS[p.id % 4]}
               borderBottomLeftRadius="xl"
               borderBottomRightRadius="xl"

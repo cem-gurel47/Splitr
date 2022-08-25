@@ -4,9 +4,7 @@ import AddPersonHeader from "@components/Headers/AddPersonHeader";
 import Layout from "@components/Box/Layout";
 import { Button, Center, Input, Text } from "native-base";
 
-type Props = {};
-
-const AddPerson = (props: Props) => {
+const AddPerson = () => {
   const { addNewPerson } = useContext(ExpenseContext);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);

@@ -9,15 +9,20 @@ import HomeScreen from "@screens/Home";
 import FinalReportScreen from "@screens/FinalReport";
 import PersonExpenses from "@screens/PersonExpenses";
 import AddPerson from "@screens/AddPerson";
+import AddExpense from "@screens/AddExpense";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
 import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
+import Toast from "react-native-toast-message";
 
 export type StackParamList = {
   Home: undefined;
   "Final Report": undefined;
   "Person Expenses": Person;
   "Add New Person": undefined;
+  "Add New Expense": {
+    personId?: number;
+  };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -72,9 +77,11 @@ export default function App() {
             <Stack.Screen name="Final Report" component={FinalReportScreen} />
             <Stack.Screen name="Person Expenses" component={PersonExpenses} />
             <Stack.Screen name="Add New Person" component={AddPerson} />
+            <Stack.Screen name="Add New Expense" component={AddExpense} />
           </Stack.Navigator>
         </ExpenseProvider>
       </NativeBaseProvider>
+      <Toast />
     </NavigationContainer>
   );
 }

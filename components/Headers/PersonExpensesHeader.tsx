@@ -32,13 +32,7 @@ const PersonExpensesHeader = ({ name }: { name: string }) => {
               />
             </Box>
             <VStack>
-              <Text
-                style={{
-                  color: "#777CEF",
-                }}
-                fontSize="3xl"
-                fontWeight="bold"
-              >
+              <Text color="#777CEF" fontSize="3xl" fontWeight="bold">
                 Expenses
               </Text>
               <Text fontSize="2xl">{name}</Text>
