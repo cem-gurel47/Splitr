@@ -3,6 +3,7 @@ import { ExpenseContext } from "@contexts/ExpenseContext";
 import AddPersonHeader from "@components/Headers/AddPersonHeader";
 import Layout from "@components/Box/Layout";
 import { Button, Center, Input, Text } from "native-base";
+import Toast from "react-native-toast-message";
 
 const AddPerson = () => {
   const { addNewPerson } = useContext(ExpenseContext);
@@ -14,6 +15,11 @@ const AddPerson = () => {
     addNewPerson(name);
     setLoading(false);
     setName("");
+    Toast.show({
+      type: "success",
+      text1: "Person created 🚀",
+      text2: `${name} is added to the list.`,
+    });
   };
 
   return (

@@ -1,6 +1,7 @@
 import React, { useRef, useContext, useState } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Center, Button, AlertDialog } from "native-base";
+import Toast from "react-native-toast-message";
 
 type Props = {
   isOpen: boolean;
@@ -19,6 +20,10 @@ const DeleteAllExpensesAlert = ({ isOpen, setIsOpen }: Props) => {
     });
     getExpenses();
     setLoading(false);
+    Toast.show({
+      type: "success",
+      text1: "All expenses are deleted!",
+    });
     onClose();
   };
 
@@ -48,7 +53,12 @@ const DeleteAllExpensesAlert = ({ isOpen, setIsOpen }: Props) => {
               >
                 Cancel
               </Button>
-              <Button colorScheme="danger" onPress={deleteEveryPersonsExpenses}>
+              <Button
+                colorScheme="danger"
+                onPress={deleteEveryPersonsExpenses}
+                isLoading={loading}
+                isLoadingText="Deleting"
+              >
                 Delete
               </Button>
             </Button.Group>

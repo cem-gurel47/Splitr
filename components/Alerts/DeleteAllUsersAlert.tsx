@@ -1,6 +1,7 @@
 import React, { useRef, useContext, useState } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Center, Button, AlertDialog } from "native-base";
+import Toast from "react-native-toast-message";
 
 type Props = {
   isOpen: boolean;
@@ -42,7 +43,13 @@ const DeleteAllUsersAlert = ({ isOpen, setIsOpen }: Props) => {
                 isLoadingText="Deleting"
                 colorScheme="danger"
                 onPress={() => {
+                  setLoading(true);
                   deleteEveryPerson();
+                  setLoading(false);
+                  Toast.show({
+                    type: "success",
+                    text1: "All users and expenses are deleted!",
+                  });
                   onClose();
                 }}
               >

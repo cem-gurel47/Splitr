@@ -67,11 +67,11 @@ const AddExpense = () => {
     )?.name;
     Toast.show({
       type: "success",
-      text1: "Expense added!",
+      text1: "Expense added 🚀",
       text2: `${formatter(
         parseFloat(amount),
         currency
-      )} is added to ${selectedPersonName}`,
+      )} is added to ${selectedPersonName}.`,
     });
     setDescription("");
     setAmount(undefined);
