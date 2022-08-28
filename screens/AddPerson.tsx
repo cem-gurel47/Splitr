@@ -2,16 +2,29 @@ import React, { useState, useContext } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import AddPersonHeader from "@components/Headers/AddPersonHeader";
 import Layout from "@components/Box/Layout";
-import { Button, Center, Input, Text } from "native-base";
+import {
+  Button,
+  Center,
+  Input,
+  Text,
+  FormControl,
+  WarningOutlineIcon,
+} from "native-base";
 import Toast from "react-native-toast-message";
 
 const AddPerson = () => {
   const { addNewPerson } = useContext(ExpenseContext);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
 
   const onPress = () => {
     setLoading(true);
+    if (name.length === 0) {
+      setIsNameEmpty(true);
+      setLoading(false);
+      return;
+    }
     addNewPerson(name);
     setLoading(false);
     setName("");
@@ -32,27 +45,30 @@ const AddPerson = () => {
     >
       <AddPersonHeader />
       <Center px={12}>
-        <Text
-          fontWeight="bold"
-          fontSize="2xl"
-          style={{
-            color: "#9196F3",
-          }}
-        >
-          Enter Name
-        </Text>
-        <Input
-          value={name}
-          onChangeText={setName}
-          size="xl"
-          variant="underlined"
-          autoFocus
-          autoCapitalize="words"
-          style={{
-            borderBottomColor: "#9196F3",
-            color: "#9196F3",
-          }}
-        />
+        <FormControl>
+          <FormControl.Label isRequired>Name</FormControl.Label>
+          <Input
+            value={name}
+            onChangeText={(text) => {
+              setIsNameEmpty(text.length === 0);
+              setName(text);
+            }}
+            size="xl"
+            variant="underlined"
+            autoFocus
+            autoCapitalize="words"
+            style={{
+              borderBottomColor: "#9196F3",
+              color: "#9196F3",
+            }}
+          />
+          <FormControl.ErrorMessage
+            isInvalid={isNameEmpty}
+            leftIcon={<WarningOutlineIcon size="xs" />}
+          >
+            Description is required
+          </FormControl.ErrorMessage>
+        </FormControl>
         <Button
           isLoading={loading}
           isLoadingText="Loading"

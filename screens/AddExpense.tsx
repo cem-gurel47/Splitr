@@ -134,13 +134,9 @@ const AddExpense = () => {
             }}
             variant="underlined"
             autoFocus
-            onChange={(e) => {
-              if (e.nativeEvent.text.length !== 0) {
-                setIsDescriptionEmpty(false);
-              } else {
-                setIsDescriptionEmpty(true);
-              }
-              setDescription(e.nativeEvent.text);
+            onChangeText={(text) => {
+              setIsAmountEmpty(text.length === 0);
+              setDescription(text);
             }}
           />
           <FormControl.ErrorMessage
@@ -163,13 +159,9 @@ const AddExpense = () => {
             }}
             variant="underlined"
             value={amount || ""}
-            onChange={(e) => {
-              if (e.nativeEvent.text.length !== 0) {
-                setIsAmountEmpty(false);
-              } else {
-                setIsAmountEmpty(true);
-              }
-              setAmount(e.nativeEvent.text);
+            onChangeText={(text) => {
+              setIsAmountEmpty(text.length === 0);
+              setAmount(text);
             }}
           />
           <FormControl.ErrorMessage
