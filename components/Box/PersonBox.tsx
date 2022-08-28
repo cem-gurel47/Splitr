@@ -13,9 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Person } from "@models/person";
 import { AntDesign } from "@expo/vector-icons";
 import formatter from "@utils/formatter";
-
-const BG_COLORS = ["#777DEF", "#44BAF8", "#F1727D", "#F9BA55"];
-
+import { BG_COLORS } from "@utils/constants";
 export default function PersonBox({
   person,
   index,
@@ -46,7 +44,13 @@ export default function PersonBox({
           },
         }}
       >
-        <Box mb={5} bgColor={BG_COLORS[index % 4]} px={4} py={6} rounded="3xl">
+        <Box
+          mb={5}
+          bgColor={BG_COLORS[index % BG_COLORS.length]}
+          px={4}
+          py={6}
+          rounded="3xl"
+        >
           <HStack justifyContent="space-between" alignItems="center" space={2}>
             <VStack alignItems="flex-start" justifyContent="center" space={2}>
               <Text fontSize="md" fontWeight="bold" color="warmGray.50">

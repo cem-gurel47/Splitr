@@ -5,11 +5,14 @@ import { NativeBaseProvider, extendTheme } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "@screens/Home";
-import FinalReportScreen from "@screens/FinalReport";
-import PersonExpenses from "@screens/PersonExpenses";
-import AddPerson from "@screens/AddPerson";
-import AddExpense from "@screens/AddExpense";
+import {
+  HomeScreen,
+  FinalReportScreen,
+  AddExpenseScreen,
+  AddPersonScreen,
+  PersonExpenses,
+  SelectCurrency,
+} from "@screens/index";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
 import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
@@ -23,6 +26,7 @@ export type StackParamList = {
   "Add New Expense": {
     personId?: number;
   };
+  "Select Currency": undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -76,8 +80,9 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Final Report" component={FinalReportScreen} />
             <Stack.Screen name="Person Expenses" component={PersonExpenses} />
-            <Stack.Screen name="Add New Person" component={AddPerson} />
-            <Stack.Screen name="Add New Expense" component={AddExpense} />
+            <Stack.Screen name="Add New Person" component={AddPersonScreen} />
+            <Stack.Screen name="Add New Expense" component={AddExpenseScreen} />
+            <Stack.Screen name="Select Currency" component={SelectCurrency} />
           </Stack.Navigator>
         </ExpenseProvider>
       </NativeBaseProvider>

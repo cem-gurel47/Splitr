@@ -2,8 +2,7 @@ import React, { useContext, useMemo } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Text, Box, HStack, VStack, Divider } from "native-base";
 import formatter from "@utils/formatter";
-
-const BG_COLORS = ["#777DEF", "#44BAF8", "#F1727D", "#F9BA55"];
+import { BG_COLORS } from "@utils/constants";
 
 const ReportChart = () => {
   const { persons, currency, amountPerUser, totalAmount } =
@@ -30,7 +29,7 @@ const ReportChart = () => {
           {personsWhoPayedMore.map((p, index) => (
             <Box
               key={`${p.id} -${index}`}
-              bgColor={BG_COLORS[p.id % 4]}
+              bgColor={BG_COLORS[p.id % BG_COLORS.length]}
               borderTopLeftRadius="xl"
               borderTopRightRadius="xl"
               w={6}
@@ -46,7 +45,7 @@ const ReportChart = () => {
           {personsWhoPayedLess.map((p, index) => (
             <Box
               key={`${p.id}-${index}`}
-              bgColor={BG_COLORS[p.id % 4]}
+              bgColor={BG_COLORS[p.id % BG_COLORS.length]}
               borderBottomLeftRadius="xl"
               borderBottomRightRadius="xl"
               w={6}
@@ -54,12 +53,12 @@ const ReportChart = () => {
             ></Box>
           ))}
         </HStack>
-        <HStack space={2} mt={4}>
+        <HStack space={2} mt={4} flexWrap="wrap">
           {persons.map((p) => (
             <HStack alignItems="center" space={2} key={p.id}>
               <Box
                 borderRadius="full"
-                bgColor={BG_COLORS[p.id % 4]}
+                bgColor={BG_COLORS[p.id % BG_COLORS.length]}
                 w={4}
                 h={4}
               ></Box>
