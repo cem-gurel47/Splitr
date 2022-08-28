@@ -9,9 +9,11 @@ import formatter from "@utils/formatter";
 const DeleteExpenseButton = ({
   expense,
   personId,
+  index,
 }: {
   expense: Expense;
   personId: number;
+  index: number;
 }) => {
   const { deleteExpense, currency } = useContext(ExpenseContext);
   return (
@@ -35,7 +37,7 @@ const DeleteExpenseButton = ({
         colorScheme="red"
         borderRadius="full"
         onPress={() => {
-          deleteExpense(expense.description, expense.amount, personId);
+          deleteExpense(index, personId);
           Toast.show({
             type: "success",
             text1: `${expense.description} is deleted!`,

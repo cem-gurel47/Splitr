@@ -7,9 +7,11 @@ import { Expense } from "@models/expense";
 const PersonExpense = ({
   expense,
   personId,
+  index,
 }: {
   expense: Expense;
   personId: number;
+  index: number;
 }) => {
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
 
@@ -21,7 +23,11 @@ const PersonExpense = ({
         showDeleteButton={deleteButtonVisible}
       />
       {deleteButtonVisible && (
-        <DeleteExpenseButton expense={expense} personId={personId} />
+        <DeleteExpenseButton
+          expense={expense}
+          personId={personId}
+          index={index}
+        />
       )}
     </HStack>
   );

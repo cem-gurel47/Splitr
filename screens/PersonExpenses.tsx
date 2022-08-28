@@ -101,44 +101,46 @@ export default function PersonExpenses() {
               <PersonExpense
                 personId={id}
                 expense={item}
+                index={index}
                 key={`${item.description}-${index}`}
               />
             )}
             ListHeaderComponent={() => <PersonExpensesHeader name={name} />}
             ListFooterComponent={() => (
-              <Button
-                mt={4}
-                variant="solid"
-                colorScheme="blue"
-                backgroundColor="purple.500"
-                borderRadius="lg"
-                shadow={4}
-                onPress={() =>
-                  navigation.navigate("Add New Expense", {
-                    personId: id,
-                  })
-                }
-                mx={3}
-              >
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  space={2}
+              <Center>
+                <Button
+                  p={4}
+                  variant="solid"
+                  colorScheme="blue"
+                  backgroundColor="#787DE8"
+                  borderRadius="full"
+                  onPress={() =>
+                    navigation.navigate("Add New Expense", {
+                      personId: id,
+                    })
+                  }
+                  justifyContent="flex-start"
                 >
-                  <Text color="white" fontSize="lg" fontWeight="semibold">
-                    Add Expense
-                  </Text>
-                  <Icon
-                    as={Ionicons}
-                    size="2xl"
-                    name="ios-add"
-                    _dark={{
-                      color: "white",
-                    }}
-                    color="white"
-                  />
-                </HStack>
-              </Button>
+                  <HStack
+                    alignItems="center"
+                    justifyContent="space-between"
+                    space={2}
+                  >
+                    <Text color="white" fontSize="lg" fontWeight="semibold">
+                      Add Expense
+                    </Text>
+                    <Icon
+                      as={Ionicons}
+                      size="xl"
+                      name="ios-add"
+                      _dark={{
+                        color: "white",
+                      }}
+                      color="white"
+                    />
+                  </HStack>
+                </Button>
+              </Center>
             )}
             keyExtractor={(item, index) => `${item.description}-${index}`}
           />

@@ -13,11 +13,7 @@ type ExpenseContextType = {
   updatePerson: (id: number, name: string, expensesArray: any[]) => void;
   totalAmount: number;
   amountPerUser: number;
-  deleteExpense: (
-    description: string,
-    amount: number,
-    personId: number
-  ) => void;
+  deleteExpense: (expenseId: number, personId: number) => void;
   setDbCurrency: (currency: string) => void;
 };
 
@@ -168,17 +164,12 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     });
   };
 
-  const deleteExpense = (
-    description: string,
-    amount: number,
-    personId: number
-  ) => {
+  const deleteExpense = (expenseId: number, personId: number) => {
     const person = persons.find((p) => p.id === personId);
     if (person) {
       const newPersonObject = { ...person };
       newPersonObject.expenses = newPersonObject.expenses.filter(
-        (expense) =>
-          expense.amount !== amount && expense.description !== description
+        (_, index) => index !== expenseId
       );
 
       db.transaction((tx) => {
