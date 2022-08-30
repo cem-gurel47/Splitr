@@ -1,24 +1,31 @@
 import React, { useEffect, useContext } from "react";
 import { FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { Text, HStack, Center, Icon, Button } from "native-base";
+import {
+  Text,
+  HStack,
+  Center,
+  Icon,
+  IconButton,
+  Button,
+  Container,
+} from "native-base";
 import Layout from "@components/Box/Layout";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Person } from "@models/person";
 import AnimatedLottieView from "lottie-react-native";
 import ScanningAnimation from "../assets/scanning.json";
-import { Ionicons } from "@expo/vector-icons";
 import PersonExpensesHeader from "@components/Headers/PersonExpensesHeader";
-import PersonNoDataHeader from "@components/Headers/PersonNoDataHeader";
 import PersonExpense from "@components/Box/PersonExpense";
+import AddExpenseStagger from "@components/Stagger/AddExpenseStagger";
 
 const NoData = ({ id, name }: { id: number; name: string }) => {
   const navigation = useNavigation();
 
   return (
     <>
-      <PersonNoDataHeader name={name} />
-      <Center style={{ flex: 1 }}>
+      <PersonExpensesHeader name={name} id={id} />
+      <Center style={{ flex: 1 }} position="relative">
         <Text color="black" fontSize="2xl">
           No expense found.
         </Text>
@@ -33,34 +40,7 @@ const NoData = ({ id, name }: { id: number; name: string }) => {
             }}
           />
         </Center>
-        <Button
-          p={4}
-          variant="solid"
-          colorScheme="blue"
-          backgroundColor="#787DE8"
-          borderRadius="full"
-          onPress={() =>
-            navigation.navigate("Add New Expense", {
-              personId: id,
-            })
-          }
-          justifyContent="flex-start"
-        >
-          <HStack alignItems="center" justifyContent="space-between" space={2}>
-            <Text color="white" fontSize="lg" fontWeight="semibold">
-              Add Expense
-            </Text>
-            <Icon
-              as={Ionicons}
-              size="xl"
-              name="ios-add"
-              _dark={{
-                color: "white",
-              }}
-              color="white"
-            />
-          </HStack>
-        </Button>
+        <AddExpenseStagger id={id} />
       </Center>
     </>
   );
@@ -88,6 +68,7 @@ export default function PersonExpenses() {
         paddingLeft: 0,
         paddingRight: 0,
         paddingTop: 0,
+        position: "relative",
       }}
     >
       {expenses.length === 0 ? (
@@ -105,45 +86,12 @@ export default function PersonExpenses() {
                 key={`${item.description}-${index}`}
               />
             )}
-            ListHeaderComponent={() => <PersonExpensesHeader name={name} />}
-            ListFooterComponent={() => (
-              <Center>
-                <Button
-                  p={4}
-                  variant="solid"
-                  colorScheme="blue"
-                  backgroundColor="#787DE8"
-                  borderRadius="full"
-                  onPress={() =>
-                    navigation.navigate("Add New Expense", {
-                      personId: id,
-                    })
-                  }
-                  justifyContent="flex-start"
-                >
-                  <HStack
-                    alignItems="center"
-                    justifyContent="space-between"
-                    space={2}
-                  >
-                    <Text color="white" fontSize="lg" fontWeight="semibold">
-                      Add Expense
-                    </Text>
-                    <Icon
-                      as={Ionicons}
-                      size="xl"
-                      name="ios-add"
-                      _dark={{
-                        color: "white",
-                      }}
-                      color="white"
-                    />
-                  </HStack>
-                </Button>
-              </Center>
+            ListHeaderComponent={() => (
+              <PersonExpensesHeader name={name} id={id} />
             )}
             keyExtractor={(item, index) => `${item.description}-${index}`}
           />
+          <AddExpenseStagger id={id} />
         </>
       )}
     </Layout>

@@ -19,7 +19,7 @@ const ReportChart = () => {
   const maxHeight = 32;
 
   return (
-    <Box borderRadius="xl" bgColor="white" p={6}>
+    <Box borderRadius="3xl" bgColor="white" p={6}>
       <Text mb={1}>Your total balance</Text>
       <Text color="#43BAF8" fontSize="2xl" fontWeight="bold" mb={4}>
         {formatter(totalAmount, currency)}
@@ -35,7 +35,7 @@ const ReportChart = () => {
               w={6}
               height={Math.min(
                 maxHeight,
-                Math.abs(amountPerUser - p.totalAmount) / 5
+                Math.abs(amountPerUser - p.totalAmount) / 20
               )}
             ></Box>
           ))}
@@ -49,8 +49,8 @@ const ReportChart = () => {
               borderBottomLeftRadius="xl"
               borderBottomRightRadius="xl"
               w={6}
-              height={Math.min(maxHeight, (amountPerUser - p.totalAmount) / 30)}
-            ></Box>
+              height={Math.min(maxHeight, (amountPerUser - p.totalAmount) / 20)}
+            />
           ))}
         </HStack>
         <HStack space={2} mt={4} flexWrap="wrap">
@@ -61,7 +61,7 @@ const ReportChart = () => {
                 bgColor={BG_COLORS[p.id % BG_COLORS.length]}
                 w={4}
                 h={4}
-              ></Box>
+              />
               <Text>{p.name}</Text>
             </HStack>
           ))}

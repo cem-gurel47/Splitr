@@ -15,6 +15,7 @@ type ExpenseContextType = {
   amountPerUser: number;
   deleteExpense: (expenseId: number, personId: number) => void;
   setDbCurrency: (currency: string) => void;
+  deletePerson: (id: number) => void;
 };
 
 export const ExpenseContext = createContext<ExpenseContextType>({
@@ -30,6 +31,7 @@ export const ExpenseContext = createContext<ExpenseContextType>({
   amountPerUser: 0,
   deleteExpense: () => {},
   setDbCurrency: () => {},
+  deletePerson: () => {},
 });
 
 type Props = {
@@ -77,6 +79,7 @@ export const ExpenseProvider = ({ children, db }: Props) => {
 
         setTotalAmount(totalAmount);
         setAmountPerUser(amountPerUser);
+        setLoading(false);
       });
     });
   };
@@ -114,6 +117,13 @@ export const ExpenseProvider = ({ children, db }: Props) => {
       tx.executeSql("insert into persons (data) values (?)", [
         JSON.stringify({ name, expenses: [] }),
       ]);
+    });
+    getExpenses();
+  };
+
+  const deletePerson = (id: number) => {
+    db.transaction((tx) => {
+      tx.executeSql("delete from persons where id = ?", [id]);
     });
     getExpenses();
   };
@@ -185,10 +195,10 @@ export const ExpenseProvider = ({ children, db }: Props) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     createTable();
     createCurrencyTable();
     getCurrency();
+    getExpenses();
     // addData("Cem", [
     //   {
     //     description: "Food",
@@ -218,11 +228,9 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     //     amount: 50,
     //   },
     // ]);
-
-    setLoading(false);
   }, []);
 
-  console.log(loading, persons, currency);
+  console.log(persons, currency);
 
   return (
     <ExpenseContext.Provider
@@ -239,6 +247,7 @@ export const ExpenseProvider = ({ children, db }: Props) => {
         amountPerUser,
         deleteExpense,
         setDbCurrency,
+        deletePerson,
       }}
     >
       {children}

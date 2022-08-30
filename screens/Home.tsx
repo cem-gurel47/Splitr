@@ -5,9 +5,11 @@ import { useDisclose, Text, Center, Spinner, VStack } from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
-import formatter from "@utils/formatter";
+import HomeHeader from "@components/Headers/HomeHeader";
 import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
 import WelcomePage from "@assets/welcome-page.png";
+import LoadingAnimation from "@assets/loading.json";
+import AnimatedLottieView from "lottie-react-native";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
@@ -31,7 +33,15 @@ export default function Home() {
     >
       {loading ? (
         <Center flex={1}>
-          <Spinner size="lg" color="indigo.500" />
+          <AnimatedLottieView
+            source={LoadingAnimation}
+            autoPlay
+            loop
+            style={{
+              width: "40%",
+              height: "100%",
+            }}
+          />
         </Center>
       ) : persons.length === 0 ? (
         <ImageBackground
@@ -66,43 +76,7 @@ export default function Home() {
             )}
             stickyHeaderIndices={[1]}
             keyExtractor={(item) => `${item.id}`}
-            ListHeaderComponent={() => (
-              <VStack>
-                <Center
-                  style={{
-                    backgroundColor: "#787DE8",
-                  }}
-                  borderBottomLeftRadius={60}
-                  borderBottomRightRadius={60}
-                  pt={16}
-                  pb={8}
-                  px={6}
-                  mb={4}
-                >
-                  <Text
-                    fontSize="xl"
-                    mb={1}
-                    style={{
-                      color: "#98C1F7",
-                    }}
-                  >
-                    Your total expenses
-                  </Text>
-                  <Text color="white" fontWeight="extrabold" fontSize="xl">
-                    {formatter(totalAmount, currency)}
-                  </Text>
-                </Center>
-                <Text
-                  color="black"
-                  fontSize="xl"
-                  fontWeight="bold"
-                  pl={25}
-                  mb={4}
-                >
-                  Track your expenses
-                </Text>
-              </VStack>
-            )}
+            ListHeaderComponent={() => <HomeHeader />}
             ListFooterComponentStyle={{
               paddingLeft: 25,
               paddingRight: 25,

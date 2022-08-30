@@ -151,14 +151,7 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
   ];
 
   return (
-    <Box
-      style={{
-        position: "absolute",
-        bottom: 50,
-        right: 20,
-      }}
-      alignItems="flex-end"
-    >
+    <Box position="absolute" bottom="10%" right="10%" alignItems="flex-end">
       <Box>
         <Stagger
           visible={isOpen}
@@ -208,7 +201,7 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
           icon={
             <Icon
               as={MaterialCommunityIcons}
-              size="6"
+              size="xl"
               name="dots-horizontal"
               color="warmGray.50"
               _dark={{

@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { Text, Box, VStack } from "native-base";
+import { Text, Box, VStack, Avatar, HStack, Button } from "native-base";
 import Layout from "@components/Box/Layout";
 import { ImageBackground, ScrollView } from "react-native";
 import FinalReportHeader from "@components/Headers/FinalReportHeader";
 import BackgroundImage from "@assets/homepage.png";
 import ReportChart from "@components/Box/ReportChart";
 import formatter from "@utils/formatter";
+import { BG_COLORS } from "@utils/constants";
 
 export default function FinalReport() {
   const { persons, amountPerUser, currency } = useContext(ExpenseContext);
@@ -85,33 +86,59 @@ export default function FinalReport() {
         <ScrollView>
           <FinalReportHeader />
           <ReportChart />
-          <Text mt={2} fontSize="2xl" color="white" fontWeight="bold">
+          <Text mt={2} mb={2} fontSize="2xl" color="white" fontWeight="bold">
             Who owes who?
           </Text>
-          {/* {transactions.map((transaction) => (
-            <Box
-              bgColor="#F5F6FA"
-              py={4}
-              px={2}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor="#fff"
-              shadow={1}
-            >
-              <VStack>
-                <Text color="#777CEF" fontWeight="bold">
-                  {transaction.name}
-                </Text>
-                {transaction.transactions.map((t) => (
-                  <Text>{`Will get ${formatter(
-                    //@ts-ignore
-                    Object.values(t)[0],
-                    currency
-                  )} from ${Object.keys(t)[0]}`}</Text>
-                ))}
-              </VStack>
-            </Box>
-          ))} */}
+          <VStack space={2}>
+            {transactions.map((transaction, i) => {
+              return transaction.transactions.map((t, j) => {
+                const personWhoNeedsToPay = Object.keys(t)[0];
+                const avatarName =
+                  personWhoNeedsToPay.length < 2
+                    ? personWhoNeedsToPay
+                    : personWhoNeedsToPay.substring(0, 2);
+                const personColor = BG_COLORS[j % BG_COLORS.length];
+                const personWhoNeedsToGetPaid = transaction.name;
+                return (
+                  <Box
+                    key={`box-${i}-${j}`}
+                    bgColor="white"
+                    borderRadius="3xl"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    flexDirection="row"
+                    pr={4}
+                  >
+                    <HStack space={2}>
+                      <Avatar
+                        size="md"
+                        bgColor={personColor}
+                        borderWidth={1}
+                        borderColor="white"
+                      >
+                        {avatarName}
+                      </Avatar>
+                      <VStack>
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          color={personColor}
+                        >
+                          {personWhoNeedsToPay}
+                        </Text>
+                        <Text fontSize="sm" color="coolGray.500">
+                          {`${personWhoNeedsToPay} owes ${personWhoNeedsToGetPaid}`}
+                        </Text>
+                      </VStack>
+                    </HStack>
+                    <Text fontSize="sm" fontWeight="bold" color="#787DE8">
+                      {formatter(t[personWhoNeedsToPay], currency)}
+                    </Text>
+                  </Box>
+                );
+              });
+            })}
+          </VStack>
         </ScrollView>
       </ImageBackground>
     </Layout>
