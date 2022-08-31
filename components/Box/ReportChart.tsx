@@ -20,7 +20,9 @@ const ReportChart = () => {
 
   return (
     <Box borderRadius="3xl" bgColor="white" p={6}>
-      <Text mb={1}>Your total balance</Text>
+      <Text mb={1} fontSize="md">
+        Your total balance
+      </Text>
       <Text color="#43BAF8" fontSize="2xl" fontWeight="bold" mb={4}>
         {formatter(totalAmount, currency)}
       </Text>

@@ -15,10 +15,10 @@ const AddExpenseHeader = () => {
       style={{
         backgroundColor: "#787DE8",
       }}
+      safeArea
       borderBottomLeftRadius={60}
       borderBottomRightRadius={60}
-      pt={12}
-      pb={8}
+      py={8}
       px={6}
       mb={4}
       position="relative"

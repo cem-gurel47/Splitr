@@ -151,74 +151,52 @@ const HomeStagger = ({ isOpen, onToggle }: Props) => {
   ];
 
   return (
-    <Box position="absolute" bottom="10%" right="10%" alignItems="flex-end">
-      <Box>
-        <Stagger
-          visible={isOpen}
-          initial={{
-            opacity: 0,
-            scale: 0,
-            translateY: 34,
-          }}
-          animate={{
-            translateY: 0,
-            scale: 1,
-            opacity: 1,
-            transition: {
-              type: "spring",
-              mass: 0.8,
-              stagger: {
-                offset: 30,
-                reverse: true,
-              },
+    <Box position="absolute" bottom="175%">
+      <Stagger
+        visible={isOpen}
+        initial={{
+          opacity: 0,
+          scale: 0,
+          translateY: 34,
+        }}
+        animate={{
+          translateY: 0,
+          scale: 1,
+          opacity: 1,
+          transition: {
+            type: "spring",
+            mass: 0.8,
+            stagger: {
+              offset: 30,
+              reverse: true,
             },
-          }}
-          exit={{
-            translateY: 34,
-            scale: 0.5,
-            opacity: 0,
-            transition: {
-              duration: 100,
-              stagger: {
-                offset: 30,
-                reverse: true,
-              },
+          },
+        }}
+        exit={{
+          translateY: 34,
+          scale: 0.5,
+          opacity: 0,
+          transition: {
+            duration: 100,
+            stagger: {
+              offset: 30,
+              reverse: true,
             },
-          }}
-        >
-          {STAGGER_ITEMS.map((item) => (
-            <StaggerItem {...item} key={item.label} />
-          ))}
-        </Stagger>
-      </Box>
-      <HStack justifyContent="center">
-        <IconButton
-          variant="solid"
-          borderRadius="full"
-          size="lg"
-          onPress={onToggle}
-          bg="cyan.400"
-          icon={
-            <Icon
-              as={MaterialCommunityIcons}
-              size="xl"
-              name="dots-horizontal"
-              color="warmGray.50"
-              _dark={{
-                color: "warmGray.50",
-              }}
-            />
-          }
+          },
+        }}
+      >
+        {STAGGER_ITEMS.map((item) => (
+          <StaggerItem {...item} key={item.label} />
+        ))}
+        <DeleteAllUsersAlert
+          isOpen={isDeleteUsersAlertVisible}
+          setIsOpen={setIsDeleteUsersAlertVisible}
         />
-      </HStack>
-      <DeleteAllUsersAlert
-        isOpen={isDeleteUsersAlertVisible}
-        setIsOpen={setIsDeleteUsersAlertVisible}
-      />
-      <DeleteAllExpensesAlert
-        isOpen={isDeleteExpensesAlertVisible}
-        setIsOpen={setIsDeleteExpensesAlertVisible}
-      />
+        <DeleteAllExpensesAlert
+          isOpen={isDeleteExpensesAlertVisible}
+          setIsOpen={setIsDeleteExpensesAlertVisible}
+        />
+      </Stagger>
     </Box>
   );
 };

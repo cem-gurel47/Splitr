@@ -1930,6 +1930,15 @@
   resolved "https://registry.yarnpkg.com/@react-native/polyfills/-/polyfills-1.0.0.tgz#05bb0031533598f9458cf65a502b8df0eecae780"
   integrity sha512-0jbp4RxjYopTsIdLl+/Fy2TiwVYHy4mgeu07DG4b/LyM0OS/+lPP5c9sbnt/AMlnF6qz2JRZpPpGw1eMNS6A4w==
 
+"@react-navigation/bottom-tabs@^6.3.3":
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.3.3.tgz#ded46ffa47c48f95d87a77e35cbed73eda3378b2"
+  integrity sha512-S5obigsDAgRD7hmGauijNITI2jPm7N40IIIwdQjJhT9Y9vos8ycLOKMVU06mchU6sRGJC2xIkPderPiwAUVvDg==
+  dependencies:
+    "@react-navigation/elements" "^1.3.5"
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@react-navigation/core@^6.2.2":
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.2.2.tgz#29ca539e22581616aad82b7451d47c5efe936f31"
@@ -1954,6 +1963,11 @@
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.4.tgz#abb48136508c1e60862dc14a101ce02ff685a337"
   integrity sha512-O0jICpjn3jskVo4yiWzZozmj7DZy1ZBbn3O7dbenuUjZSj/cscjwaapmZZFGcI/IMmjmx8UTKsybhCFEIbGf3g==
+
+"@react-navigation/elements@^1.3.5":
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.5.tgz#904876ce3f3c36632f242322dd622bb3e18e6775"
+  integrity sha512-3Ef5cYuQXqJRco7RG99fkDEciAuYTkAD7go5D8RFYG8rAp2aI/cDnGwFwvFVANlRsbFFPGU3ZLY8EUJihf4Hjw==
 
 "@react-navigation/native-stack@^6.7.0":
   version "6.7.0"
@@ -3521,6 +3535,15 @@ expo-modules-core@0.6.5:
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
+
+expo-navigation-bar@~1.1.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/expo-navigation-bar/-/expo-navigation-bar-1.1.2.tgz#1caddf41b3fd7652796db933ffe59a1ab0ed658c"
+  integrity sha512-6TEmFArrCazRKrhQrWho1sBEXiFBP+7MIcAeZ5wEB+QEb7ZkYmC+JKFfZl3oz9VWD7nnhgcLRgFE9XL0n74Fow==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    "@react-native/normalize-color" "^2.0.0"
+    debug "^4.3.2"
 
 expo-sqlite@~10.1.0:
   version "10.1.1"

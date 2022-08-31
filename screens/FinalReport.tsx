@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { Text, Box, VStack, Avatar, HStack, Button } from "native-base";
 import Layout from "@components/Box/Layout";
-import { ImageBackground, ScrollView } from "react-native";
+import { ImageBackground, ScrollView, StatusBar } from "react-native";
 import FinalReportHeader from "@components/Headers/FinalReportHeader";
 import BackgroundImage from "@assets/homepage.png";
 import ReportChart from "@components/Box/ReportChart";
@@ -79,17 +79,16 @@ export default function FinalReport() {
           flex: 1,
           paddingLeft: "5%",
           paddingRight: "5%",
-          paddingTop: "15%",
-          paddingBottom: "15%",
         }}
       >
+        <StatusBar backgroundColor="#43BAF8" />
+        <FinalReportHeader />
         <ScrollView>
-          <FinalReportHeader />
           <ReportChart />
           <Text mt={2} mb={2} fontSize="2xl" color="white" fontWeight="bold">
             Who owes who?
           </Text>
-          <VStack space={2}>
+          <VStack space={2} paddingBottom={10}>
             {transactions.map((transaction, i) => {
               return transaction.transactions.map((t, j) => {
                 const personWhoNeedsToPay = Object.keys(t)[0];

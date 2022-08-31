@@ -6,15 +6,14 @@ import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
 import HomeHeader from "@components/Headers/HomeHeader";
-import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
+// import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
 import WelcomePage from "@assets/welcome-page.png";
 import LoadingAnimation from "@assets/loading.json";
 import AnimatedLottieView from "lottie-react-native";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
-  const { persons, getExpenses, currency, totalAmount, loading } =
-    useContext(ExpenseContext);
+  const { persons, getExpenses, loading } = useContext(ExpenseContext);
   const [refreshing, setRefreshing] = useState(false);
 
   return (
@@ -74,14 +73,14 @@ export default function Home() {
             renderItem={({ item, index }) => (
               <PersonBox person={item} index={index} />
             )}
-            stickyHeaderIndices={[1]}
+            stickyHeaderIndices={[0]}
             keyExtractor={(item) => `${item.id}`}
             ListHeaderComponent={() => <HomeHeader />}
             ListFooterComponentStyle={{
               paddingLeft: 25,
               paddingRight: 25,
             }}
-            ListFooterComponent={() => <CalculateBackgroundBox />}
+            // ListFooterComponent={() => <CalculateBackgroundBox />}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -94,7 +93,7 @@ export default function Home() {
               />
             }
           />
-          <HomeStagger isOpen={isOpen} onToggle={onToggle} />
+          {/* <HomeStagger isOpen={isOpen} onToggle={onToggle} /> */}
         </>
       )}
     </Layout>

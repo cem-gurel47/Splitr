@@ -4,3 +4,4 @@ export { default as AddPersonScreen } from "./AddPerson";
 export { default as FinalReportScreen } from "./FinalReport";
 export { default as PersonExpenses } from "./PersonExpenses";
 export { default as SelectCurrency } from "./SelectCurrency";
+export { default as Settings } from "./Settings";

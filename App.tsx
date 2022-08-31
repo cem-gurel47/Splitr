@@ -1,10 +1,11 @@
 import "react-native-gesture-handler";
-import React from "react";
-import { Platform } from "react-native";
-import { NativeBaseProvider, extendTheme } from "native-base";
+import React, { useEffect, useState } from "react";
+import { Platform, StatusBar } from "react-native";
+import { NativeBaseProvider, extendTheme, Button } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   HomeScreen,
   FinalReportScreen,
@@ -12,11 +13,14 @@ import {
   AddPersonScreen,
   PersonExpenses,
   SelectCurrency,
+  Settings,
 } from "@screens/index";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
 import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
 import Toast from "react-native-toast-message";
+import BottomTab from "@components/BottomTab";
+import * as NavigationBar from "expo-navigation-bar";
 
 export type StackParamList = {
   Home: undefined;
@@ -27,9 +31,11 @@ export type StackParamList = {
     personId?: number;
   };
   "Select Currency": undefined;
+  Settings: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
+const Tab = createBottomTabNavigator();
 
 // Define the config
 const config = {
@@ -61,8 +67,28 @@ const openDatabase = () => {
 export const db = openDatabase();
 
 export default function App() {
+  const [barVisibility, setBarVisibility] = useState<undefined | string>();
+
+  NavigationBar.addVisibilityListener(({ visibility }) => {
+    if (visibility === "visible") {
+      setBarVisibility(visibility);
+    }
+  });
+  useEffect(() => {
+    navigationConfig();
+  }, [barVisibility]);
+
+  const navigationConfig = async () => {
+    // Just incase it is not hidden
+    NavigationBar.setBackgroundColorAsync("white");
+    NavigationBar.setButtonStyleAsync("dark");
+
+    // Hide it
+    NavigationBar.setVisibilityAsync("hidden");
+  };
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor="#787DE8" />
       <NativeBaseProvider
         config={{
           dependencies: {
@@ -71,19 +97,21 @@ export default function App() {
         }}
       >
         <ExpenseProvider db={db}>
-          <Stack.Navigator
+          <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
               headerShown: false,
             }}
+            tabBar={(props) => <BottomTab {...props} />}
           >
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Final Report" component={FinalReportScreen} />
-            <Stack.Screen name="Person Expenses" component={PersonExpenses} />
-            <Stack.Screen name="Add New Person" component={AddPersonScreen} />
-            <Stack.Screen name="Add New Expense" component={AddExpenseScreen} />
-            <Stack.Screen name="Select Currency" component={SelectCurrency} />
-          </Stack.Navigator>
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Final Report" component={FinalReportScreen} />
+            <Tab.Screen name="Person Expenses" component={PersonExpenses} />
+            <Tab.Screen name="Add New Person" component={AddPersonScreen} />
+            <Tab.Screen name="Add New Expense" component={AddExpenseScreen} />
+            <Tab.Screen name="Select Currency" component={SelectCurrency} />
+            <Tab.Screen name="Settings" component={Settings} />
+          </Tab.Navigator>
         </ExpenseProvider>
       </NativeBaseProvider>
       <Toast />
