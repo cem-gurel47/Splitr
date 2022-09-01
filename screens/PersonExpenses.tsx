@@ -26,7 +26,13 @@ const NoData = ({ id, name }: { id: number; name: string }) => {
     <>
       <PersonExpensesHeader name={name} id={id} />
       <Center style={{ flex: 1 }} position="relative">
-        <Text color="black" fontSize="2xl">
+        <Text
+          color="black"
+          _dark={{
+            color: "warmGray.50",
+          }}
+          fontSize="2xl"
+        >
           No expense found.
         </Text>
         <Center width="sm" height="sm">

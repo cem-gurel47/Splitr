@@ -15,6 +15,7 @@ type ExpenseContextType = {
   amountPerUser: number;
   deleteExpense: (expenseId: number, personId: number) => void;
   setDbCurrency: (currency: string) => void;
+  updateCurrency: (currency: string) => void;
   deletePerson: (id: number) => void;
 };
 
@@ -32,6 +33,7 @@ export const ExpenseContext = createContext<ExpenseContextType>({
   deleteExpense: () => {},
   setDbCurrency: () => {},
   deletePerson: () => {},
+  updateCurrency: () => {},
 });
 
 type Props = {
@@ -108,7 +110,31 @@ export const ExpenseProvider = ({ children, db }: Props) => {
 
   const setDbCurrency = (currency: string) => {
     db.transaction((tx) => {
-      tx.executeSql("insert into currency (currency) values (?)", [currency]);
+      tx.executeSql(
+        "insert into currency (currency) values (?)",
+        [currency],
+        () => {
+          setCurrency(currency);
+        }
+      );
+    });
+  };
+
+  const updateCurrency = (currency: string) => {
+    db.transaction((tx) => {
+      tx.executeSql("update currency set currency = ?", [currency], () => {
+        setCurrency(currency);
+      });
+    });
+  };
+
+  const getCurrency = () => {
+    db.transaction((tx) => {
+      tx.executeSql("SELECT * FROM currency", [], (_, { rows }) => {
+        if (rows._array.length > 0) {
+          setCurrency(rows._array[0].currency);
+        }
+      });
     });
   };
 
@@ -126,16 +152,6 @@ export const ExpenseProvider = ({ children, db }: Props) => {
       tx.executeSql("delete from persons where id = ?", [id]);
     });
     getExpenses();
-  };
-
-  const getCurrency = () => {
-    db.transaction((tx) => {
-      tx.executeSql("SELECT * FROM currency", [], (_, { rows }) => {
-        if (rows._array.length > 0) {
-          setCurrency(rows._array[0].currency);
-        }
-      });
-    });
   };
 
   const addData = (name: string, expensesArray: any[]) => {
@@ -248,6 +264,7 @@ export const ExpenseProvider = ({ children, db }: Props) => {
         deleteExpense,
         setDbCurrency,
         deletePerson,
+        updateCurrency,
       }}
     >
       {children}

@@ -1,21 +1,38 @@
 import React, { useState, useContext } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
+import { ThemeContext } from "@contexts/ThemeContext";
 import Layout from "@components/Box/Layout";
 import { ImageBackground } from "react-native";
 import { Select, Center, Text, CheckCircleIcon } from "native-base";
 import CurrencyPageBackground from "@assets/currency-page.png";
+import CurrencyPageBackgroundDark from "@assets/currency-page-dark.png";
 import BackgroundButton from "@components/Buttons/BackgroundButton";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 const CURRENCY_OPTIONS = ["USD", "EUR", "CAD", "TRY", "JPY", "CNY"];
 
 const SelectCurrency = () => {
   const navigation = useNavigation();
-  const { setDbCurrency } = useContext(ExpenseContext);
-  const [selectedCurrency, setSelectedCurrency] = useState(CURRENCY_OPTIONS[0]);
+  const { setDbCurrency, currency, updateCurrency } =
+    useContext(ExpenseContext);
+  const { theme } = useContext(ThemeContext);
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    currency || CURRENCY_OPTIONS[0]
+  );
 
   const onPress = () => {
-    setDbCurrency(selectedCurrency);
+    if (currency) {
+      updateCurrency(selectedCurrency);
+      Toast.show({
+        type: "success",
+        text1: "Currency updated",
+        text2: "Your currency has been updated to " + selectedCurrency,
+      });
+    } else {
+      setDbCurrency(selectedCurrency);
+    }
+
     navigation.navigate("Home");
   };
 
@@ -28,21 +45,36 @@ const SelectCurrency = () => {
       }}
     >
       <ImageBackground
-        source={CurrencyPageBackground}
+        source={
+          theme === "dark" ? CurrencyPageBackgroundDark : CurrencyPageBackground
+        }
         style={{
           flex: 1,
           padding: "5%",
-          paddingTop: "20%",
+          paddingTop: "10%",
           position: "relative",
         }}
       >
-        <Text fontSize="2xl" color="white" fontWeight="thin">
-          Let's select a
-        </Text>
-        <Text fontSize="3xl" color="white" fontWeight="bold">
-          Currency
-        </Text>
-        <Center position="absolute" top="50%" alignSelf="center" w="100%">
+        {currency ? (
+          <>
+            <Text fontSize="2xl" color="white" fontWeight="thin">
+              Update
+            </Text>
+            <Text fontSize="3xl" color="white" fontWeight="bold">
+              Currency
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text fontSize="2xl" color="white" fontWeight="thin">
+              Let's select a
+            </Text>
+            <Text fontSize="3xl" color="white" fontWeight="bold">
+              Currency
+            </Text>
+          </>
+        )}
+        <Center position="absolute" bottom="10%" alignSelf="center" w="100%">
           <Select
             w="100%"
             mb="35%"
@@ -68,7 +100,9 @@ const SelectCurrency = () => {
               <Select.Item value={value} label={value} key={value} />
             ))}
           </Select>
-          <BackgroundButton onPress={onPress}>Continue</BackgroundButton>
+          <BackgroundButton onPress={onPress}>
+            {currency ? "Update" : "Continue"}
+          </BackgroundButton>
         </Center>
       </ImageBackground>
     </Layout>

@@ -42,6 +42,9 @@ const HomeEmptyStagger = () => {
           <IconButton
             variant="solid"
             bg="green.400"
+            _dark={{
+              bgColor: "#787DE8",
+            }}
             colorScheme="teal"
             borderRadius="full"
             onPress={() => {

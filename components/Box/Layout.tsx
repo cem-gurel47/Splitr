@@ -10,7 +10,7 @@ export default function Layout({ children, style, onPress }: Props) {
   return (
     <Box
       onTouchEnd={onPress}
-      _dark={{ bg: "blueGray.900" }}
+      _dark={{ bg: "#24242D" }}
       _light={{ bg: "blueGray.50" }}
       flex={1}
       width="full"

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "@contexts/ThemeContext";
+import { ExpenseContext } from "@contexts/ExpenseContext";
 import {
   HStack,
   Button,
@@ -6,7 +8,7 @@ import {
   Icon,
   VStack,
   IconButton,
-  PresenceTransition,
+  Pressable,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -14,8 +16,10 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 const BOTTOM_TOB_VISIBLE_ROUTES = ["Home", "Final Report", "Settings"];
 
 const BottomTab = (props: BottomTabBarProps) => {
-  const { state, descriptors } = props;
+  const { state } = props;
   const navigation = useNavigation();
+  const { themeLoading } = useContext(ThemeContext);
+  const { loading, currency } = useContext(ExpenseContext);
 
   //const { navigation, state } = props;
   const onPress = (routeName: "Home" | "Final Report" | "Settings") => {
@@ -24,10 +28,17 @@ const BottomTab = (props: BottomTabBarProps) => {
 
   const currentRoute = state.routes[state.index].name;
 
+  if (loading || themeLoading || !currency) {
+    return null;
+  }
+
   return (
     <HStack
       justifyContent="space-evenly"
       py={3}
+      _dark={{
+        bgColor: "#24242D",
+      }}
       borderTopWidth={2}
       borderTopColor="#787DE8"
     >
@@ -52,33 +63,35 @@ const BottomTab = (props: BottomTabBarProps) => {
           );
         }
         return (
-          <VStack
-            key={route}
-            space={1}
-            onTouchEnd={() => onPress("Final Report")}
-            alignItems="center"
-          >
-            <IconButton
-              marginTop={-12}
-              width={16}
-              height={16}
-              bgColor="#787DE8"
-              borderWidth={2}
-              borderColor="white"
-              shadow={3}
-              borderRadius="full"
-              style={{ transform: [{ rotate: "360deg" }] }}
-              icon={
-                <Icon
-                  as={MaterialIcons}
-                  name="calculate"
-                  size="2xl"
-                  color="white"
-                />
-              }
-            />
-            <Text color={color}>Calculate</Text>
-          </VStack>
+          <Pressable onPress={() => onPress("Final Report")} key={route}>
+            <VStack space={1} alignItems="center">
+              <IconButton
+                zIndex={2000}
+                onPress={() => {
+                  console.log("pressed");
+                  onPress("Final Report");
+                }}
+                marginTop={-12}
+                width={16}
+                height={16}
+                bgColor="#787DE8"
+                borderWidth={2}
+                borderColor="white"
+                shadow={3}
+                borderRadius="full"
+                style={{ transform: [{ rotate: "360deg" }] }}
+                icon={
+                  <Icon
+                    as={MaterialIcons}
+                    name="calculate"
+                    size="2xl"
+                    color="white"
+                  />
+                }
+              />
+              <Text color={color}>Calculate</Text>
+            </VStack>
+          </Pressable>
         );
       })}
     </HStack>

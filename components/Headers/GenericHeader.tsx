@@ -5,9 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 
 const AddPersonHeader = ({ label }: { label: string }) => {
   const navigation = useNavigation();
+
   const goBack = () => {
-    navigation.navigate("Home");
+    navigation.goBack();
   };
+
   return (
     <HStack
       safeArea

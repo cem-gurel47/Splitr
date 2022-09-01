@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext } from "@contexts/ThemeContext";
 import Layout from "@components/Box/Layout";
-import { Button, Icon, Text, VStack, HStack } from "native-base";
-import { MaterialIcons, AntDesign, Fontisto } from "@expo/vector-icons";
+import { Icon, VStack, HStack, Switch } from "native-base";
+import {
+  MaterialIcons,
+  AntDesign,
+  Fontisto,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   DeleteAllExpensesAlert,
   DeleteAllUsersAlert,
 } from "@components/Alerts";
 import GenericHeader from "@components/Headers/GenericHeader";
+import Text from "@components/ThemableText";
 
 const Settings = () => {
+  const { theme, setTheme, updateTheme } = useContext(ThemeContext);
   const navigation = useNavigation();
   const [deleteAllUsersModalVisible, setDeleteAllUsersModalVisible] =
     useState(false);
@@ -20,7 +28,15 @@ const Settings = () => {
     {
       label: "Add New Person",
       icon: (
-        <Icon as={MaterialIcons} name="payment" size="xl" color="#2348FF" />
+        <Icon
+          as={MaterialIcons}
+          name="payment"
+          size="xl"
+          color="#777CEF"
+          _dark={{
+            color: "warmGray.50",
+          }}
+        />
       ),
       onPress: () => {
         navigation.navigate("Add New Person");
@@ -31,12 +47,12 @@ const Settings = () => {
       icon: (
         <Icon
           as={AntDesign}
-          size="6"
+          size="xl"
           name="deleteusergroup"
           _dark={{
             color: "warmGray.50",
           }}
-          color="#2348FF"
+          color="#777CEF"
         />
       ),
       onPress: () => {
@@ -44,49 +60,108 @@ const Settings = () => {
       },
     },
     {
+      label: "Delete All Expenses",
+      icon: (
+        <Icon
+          as={MaterialIcons}
+          size="6"
+          name="money-off"
+          _dark={{
+            color: "warmGray.50",
+          }}
+          color="#777CEF"
+        />
+      ),
+      onPress: () => {
+        setDeleteAllExpensesModalVisible(true);
+      },
+    },
+    {
       label: "Change Currency",
       icon: (
         <Icon
           as={Fontisto}
-          size="6"
+          size="xl"
           name="money-symbol"
           _dark={{
             color: "warmGray.50",
           }}
-          color="#2348FF"
+          color="#777CEF"
         />
       ),
       onPress: () => {
         navigation.navigate("Select Currency");
       },
     },
+    {
+      label: "Toggle Theme",
+      icon: (
+        <Icon
+          as={MaterialCommunityIcons}
+          name="theme-light-dark"
+          size="xl"
+          _dark={{
+            color: "warmGray.50",
+          }}
+          color="#777CEF"
+        />
+      ),
+      onPress: () => {
+        updateTheme(theme === "light" ? "dark" : "light");
+      },
+      rightComponent: (
+        <Switch
+          colorScheme={"blue"}
+          size="lg"
+          isChecked={theme === "light"}
+          aria-label={
+            theme === "light" ? "switch to dark mode" : "switch to light mode"
+          }
+        />
+      ),
+    },
   ];
 
   return (
     <Layout>
       <GenericHeader label="Settings" />
-      <VStack space={2} px={6}>
-        {SETTINGS_ITEMS.map(({ label, onPress, icon }, index) => (
-          <Button bgColor="transparent" w="65%" key={label} onPress={onPress}>
+      <VStack space={4} px={6} alignItems="flex-start">
+        {SETTINGS_ITEMS.map(({ label, onPress, icon, rightComponent }) => (
+          <HStack
+            key={label}
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+            onTouchEnd={onPress}
+          >
             <HStack
-              justifyContent="space-between"
+              space={2}
               alignItems="center"
-              width="100%"
+              justifyContent="space-between"
             >
-              <HStack space={2} width="100%" alignItems="center">
-                {icon}
-                <Text color="#2348FF" fontSize="xl">
-                  {label}
-                </Text>
-              </HStack>
+              {icon}
+              <Text
+                color="#777CEF"
+                fontSize="xl"
+                _dark={{
+                  color: "warmGray.50",
+                }}
+              >
+                {label}
+              </Text>
+            </HStack>
+            {rightComponent ?? (
               <Icon
                 as={AntDesign}
                 name="rightcircleo"
                 size="lg"
-                color="#2348FF"
+                _dark={{
+                  color: "warmGray.50",
+                }}
+                color="#777CEF"
               />
-            </HStack>
-          </Button>
+            )}
+          </HStack>
         ))}
       </VStack>
       <DeleteAllExpensesAlert

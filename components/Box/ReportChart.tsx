@@ -19,7 +19,14 @@ const ReportChart = () => {
   const maxHeight = 32;
 
   return (
-    <Box borderRadius="3xl" bgColor="white" p={6}>
+    <Box
+      borderRadius="3xl"
+      bgColor="white"
+      _dark={{
+        bgColor: "#24242D",
+      }}
+      p={6}
+    >
       <Text mb={1} fontSize="md">
         Your total balance
       </Text>
@@ -39,7 +46,7 @@ const ReportChart = () => {
                 maxHeight,
                 Math.abs(amountPerUser - p.totalAmount) / 20
               )}
-            ></Box>
+            />
           ))}
         </HStack>
 

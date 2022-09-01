@@ -1,19 +1,22 @@
 import React, { useContext, useState } from "react";
 import { RefreshControl, FlatList, ImageBackground } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { useDisclose, Text, Center, Spinner, VStack } from "native-base";
+import { ThemeContext } from "@contexts/ThemeContext";
+import { useDisclose, Text, Center } from "native-base";
 import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
-import { HomeEmptyStagger, HomeStagger } from "@components/Stagger";
+import { HomeEmptyStagger } from "@components/Stagger";
 import HomeHeader from "@components/Headers/HomeHeader";
 // import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
 import WelcomePage from "@assets/welcome-page.png";
+import WelcomePageDark from "@assets/welcome-dark.png";
 import LoadingAnimation from "@assets/loading.json";
 import AnimatedLottieView from "lottie-react-native";
 
 export default function Home() {
   const { isOpen, onToggle } = useDisclose();
   const { persons, getExpenses, loading } = useContext(ExpenseContext);
+  const { theme, themeLoading } = useContext(ThemeContext);
   const [refreshing, setRefreshing] = useState(false);
 
   return (
@@ -30,8 +33,13 @@ export default function Home() {
         }
       }}
     >
-      {loading ? (
-        <Center flex={1}>
+      {loading || themeLoading ? (
+        <Center
+          flex={1}
+          _dark={{
+            bgColor: "#24242D",
+          }}
+        >
           <AnimatedLottieView
             source={LoadingAnimation}
             autoPlay
@@ -44,7 +52,7 @@ export default function Home() {
         </Center>
       ) : persons.length === 0 ? (
         <ImageBackground
-          source={WelcomePage}
+          source={theme === "dark" ? WelcomePageDark : WelcomePage}
           style={{
             flex: 1,
             padding: "5%",

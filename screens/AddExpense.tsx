@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import AddExpenseHeader from "@components/Headers/AddExpenseHeader";
+import Header from "@components/Headers/GenericHeader";
 import Layout from "@components/Box/Layout";
 import {
   Button,
@@ -85,7 +85,7 @@ const AddExpense = () => {
         paddingTop: 0,
       }}
     >
-      <AddExpenseHeader />
+      <Header label="Add New Expense" />
       <Center px={12}>
         <FormControl>
           <FormControl.Label isRequired>Person</FormControl.Label>

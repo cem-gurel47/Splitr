@@ -23,7 +23,7 @@ const DeleteAllUsersAlert = ({ isOpen, setIsOpen }: Props) => {
       >
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
-          <AlertDialog.Header>Delete All Users</AlertDialog.Header>
+          <AlertDialog.Header>Delete All Persons</AlertDialog.Header>
           <AlertDialog.Body>
             This will remove all data relating to users and their expenses. This
             action cannot be reversed. Deleted data can not be recovered.

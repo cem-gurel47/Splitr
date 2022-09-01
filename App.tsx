@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { Platform, StatusBar } from "react-native";
-import { NativeBaseProvider, extendTheme, Button } from "native-base";
+import { NativeBaseProvider, extendTheme } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,6 +16,7 @@ import {
   Settings,
 } from "@screens/index";
 import { ExpenseProvider } from "@contexts/ExpenseContext";
+import { ThemeProvider } from "@contexts/ThemeContext";
 import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
 import Toast from "react-native-toast-message";
@@ -96,23 +97,25 @@ export default function App() {
           },
         }}
       >
-        <ExpenseProvider db={db}>
-          <Tab.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              headerShown: false,
-            }}
-            tabBar={(props) => <BottomTab {...props} />}
-          >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Final Report" component={FinalReportScreen} />
-            <Tab.Screen name="Person Expenses" component={PersonExpenses} />
-            <Tab.Screen name="Add New Person" component={AddPersonScreen} />
-            <Tab.Screen name="Add New Expense" component={AddExpenseScreen} />
-            <Tab.Screen name="Select Currency" component={SelectCurrency} />
-            <Tab.Screen name="Settings" component={Settings} />
-          </Tab.Navigator>
-        </ExpenseProvider>
+        <ThemeProvider db={db}>
+          <ExpenseProvider db={db}>
+            <Tab.Navigator
+              initialRouteName="Home"
+              screenOptions={{
+                headerShown: false,
+              }}
+              tabBar={(props) => <BottomTab {...props} />}
+            >
+              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="Final Report" component={FinalReportScreen} />
+              <Tab.Screen name="Person Expenses" component={PersonExpenses} />
+              <Tab.Screen name="Add New Person" component={AddPersonScreen} />
+              <Tab.Screen name="Add New Expense" component={AddExpenseScreen} />
+              <Tab.Screen name="Select Currency" component={SelectCurrency} />
+              <Tab.Screen name="Settings" component={Settings} />
+            </Tab.Navigator>
+          </ExpenseProvider>
+        </ThemeProvider>
       </NativeBaseProvider>
       <Toast />
     </NavigationContainer>
@@ -120,25 +123,3 @@ export default function App() {
 }
 
 // Color Switch Component
-
-// function ToggleDarkMode({
-//   setTheme,
-// }: {
-//   setTheme: React.Dispatch<
-//     React.SetStateAction<"dark" | "light" | null | undefined>
-//   >;
-// }) {
-//   const { colorMode, toggleColorMode } = useColorMode();
-//   return (
-//     <Switch
-//       isChecked={colorMode === "light"}
-//       onToggle={() => {
-//         toggleColorMode();
-//         setTheme(colorMode === "light" ? "dark" : "light");
-//       }}
-//       aria-label={
-//         colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-//       }
-//     />
-//   );
-// }
