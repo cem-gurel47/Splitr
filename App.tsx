@@ -22,6 +22,7 @@ import * as SQLite from "expo-sqlite";
 import Toast from "react-native-toast-message";
 import BottomTab from "@components/BottomTab";
 import * as NavigationBar from "expo-navigation-bar";
+import * as Notifications from "expo-notifications";
 
 export type StackParamList = {
   Home: undefined;
@@ -69,15 +70,13 @@ export const db = openDatabase();
 
 export default function App() {
   const [barVisibility, setBarVisibility] = useState<undefined | string>();
+  const [expoPushToken, setExpoPushToken] = useState<string>();
 
   NavigationBar.addVisibilityListener(({ visibility }) => {
     if (visibility === "visible") {
       setBarVisibility(visibility);
     }
   });
-  useEffect(() => {
-    navigationConfig();
-  }, [barVisibility]);
 
   const navigationConfig = async () => {
     // Just incase it is not hidden
@@ -87,6 +86,43 @@ export default function App() {
     // Hide it
     NavigationBar.setVisibilityAsync("hidden");
   };
+
+  const registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert(
+        "You will not get monthly notifications. You can change this from the settings."
+      );
+      return;
+    }
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+    setExpoPushToken(token);
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+  };
+
+  useEffect(() => {
+    navigationConfig();
+  }, [barVisibility]);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
   return (
     <NavigationContainer>
       <StatusBar backgroundColor="#787DE8" />
