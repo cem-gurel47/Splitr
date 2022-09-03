@@ -7,17 +7,24 @@ import Layout from "@components/Box/Layout";
 import PersonBox from "@components/Box/PersonBox";
 import { HomeEmptyStagger } from "@components/Stagger";
 import HomeHeader from "@components/Headers/HomeHeader";
-// import CalculateBackgroundBox from "@components/Box/CalculateBackgroundBox";
 import WelcomePage from "@assets/welcome-page.png";
 import WelcomePageDark from "@assets/welcome-dark.png";
 import LoadingAnimation from "@assets/loading.json";
 import AnimatedLottieView from "lottie-react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Home() {
+  const navigation = useNavigation();
   const { isOpen, onToggle } = useDisclose();
-  const { persons, getExpenses, loading } = useContext(ExpenseContext);
+  const { persons, getExpenses, loading, currency } =
+    useContext(ExpenseContext);
   const { theme, themeLoading } = useContext(ThemeContext);
   const [refreshing, setRefreshing] = useState(false);
+
+  if (!loading && !themeLoading && !currency) {
+    // then the currency is not set, so go to the select currency screen
+    navigation.navigate("Select Currency");
+  }
 
   return (
     <Layout

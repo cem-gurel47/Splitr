@@ -10,7 +10,7 @@ import BackgroundButton from "@components/Buttons/BackgroundButton";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 
-const CURRENCY_OPTIONS = ["USD", "EUR", "CAD", "TRY", "JPY", "CNY"];
+const CURRENCY_OPTIONS = ["USD", "EUR", "CAD", "TRY", "JPY", "CNY", "GBP"];
 
 const SelectCurrency = () => {
   const navigation = useNavigation();
