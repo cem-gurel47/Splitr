@@ -15,6 +15,7 @@ import {
 import { useRoute, RouteProp } from "@react-navigation/native";
 import formatter from "@utils/formatter";
 import Toast from "react-native-toast-message";
+import { TouchableOpacity } from "react-native";
 
 const AddExpense = () => {
   const { updatePerson, currency, persons, getExpenses } =
@@ -177,30 +178,36 @@ const AddExpense = () => {
             Amount must be a valid number
           </FormControl.ErrorMessage>
         </FormControl>
-        <Button
-          isLoading={isLoading}
-          isLoadingText="Loading"
-          disabled={isLoading}
-          w="100%"
-          mt={8}
-          variant="outline"
-          py={2}
-          borderRadius="2xl"
+        <TouchableOpacity
           style={{
-            borderColor: "#9196F3",
+            width: "100%",
           }}
-          onPress={onPress}
         >
-          <Text
+          <Button
+            isLoading={isLoading}
+            isLoadingText="Loading"
+            disabled={isLoading}
+            w="100%"
+            mt={8}
+            variant="outline"
+            py={2}
+            borderRadius="2xl"
             style={{
-              color: "#9196F3",
+              borderColor: "#9196F3",
             }}
-            fontWeight="bold"
-            fontSize="xl"
+            onPress={onPress}
           >
-            Add Expense
-          </Text>
-        </Button>
+            <Text
+              style={{
+                color: "#9196F3",
+              }}
+              fontWeight="bold"
+              fontSize="xl"
+            >
+              Add Expense
+            </Text>
+          </Button>
+        </TouchableOpacity>
       </Center>
     </Layout>
   );

@@ -10,6 +10,7 @@ import formatter from "@utils/formatter";
 import { BG_COLORS } from "@utils/constants";
 
 export default function FinalReport() {
+  const totalAmount = 0;
   const { persons, amountPerUser, currency } = useContext(ExpenseContext);
   const [transactions, setTransactions] = useState<
     { name: string; transactions: any[] }[]
@@ -83,6 +84,7 @@ export default function FinalReport() {
       >
         <StatusBar backgroundColor="#43BAF8" />
         <FinalReportHeader />
+
         <ScrollView>
           <ReportChart />
           <Text mt={2} mb={2} fontSize="2xl" color="white" fontWeight="bold">

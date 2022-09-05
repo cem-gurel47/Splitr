@@ -1,13 +1,20 @@
 import React from "react";
-import { Center, IPressableProps, Text, Pressable } from "native-base";
+import { Center, IPressableProps, Text } from "native-base";
 import ButtonBackground from "@assets/button-background.png";
-import { ImageBackground } from "react-native";
+import { ImageBackground, TouchableOpacity } from "react-native";
 
-interface Props extends IPressableProps {}
+interface Props extends IPressableProps {
+  onPress: () => void;
+}
 
 const BackgroundButton = (props: Props) => {
   return (
-    <Pressable w="100%">
+    <TouchableOpacity
+      style={{
+        width: "100%",
+      }}
+      onPress={props.onPress}
+    >
       <Center w="100%">
         <ImageBackground
           source={ButtonBackground}
@@ -26,7 +33,7 @@ const BackgroundButton = (props: Props) => {
           </Text>
         </ImageBackground>
       </Center>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

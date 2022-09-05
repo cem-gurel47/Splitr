@@ -1,10 +1,15 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useState, useMemo } from "react";
+import { TouchableOpacity } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import { Text, Box, HStack, VStack, Divider } from "native-base";
+import { Text, Box, HStack, VStack, Icon } from "native-base";
 import formatter from "@utils/formatter";
 import { BG_COLORS } from "@utils/constants";
+import { Feather } from "@expo/vector-icons";
+import CardFlip from "react-native-card-flip";
 
 const ReportChart = () => {
+  const [card, setCard] = useState<CardFlip | null>(null);
+  const [isFlipped, setIsFlipped] = useState(false);
   const { persons, currency, amountPerUser, totalAmount } =
     useContext(ExpenseContext);
 
@@ -27,55 +32,96 @@ const ReportChart = () => {
       }}
       p={6}
     >
-      <Text mb={1} fontSize="md">
-        Your total balance
-      </Text>
-      <Text color="#43BAF8" fontSize="2xl" fontWeight="bold" mb={4}>
-        {formatter(totalAmount, currency)}
-      </Text>
-      <VStack justifyContent="space-between">
-        <HStack space={8}>
-          {personsWhoPayedMore.map((p, index) => (
-            <Box
-              key={`${p.id} -${index}`}
-              bgColor={BG_COLORS[p.id % BG_COLORS.length]}
-              borderTopLeftRadius="xl"
-              borderTopRightRadius="xl"
-              w={6}
-              height={Math.min(
-                maxHeight,
-                Math.abs(amountPerUser - p.totalAmount) / 20
-              )}
-            />
-          ))}
-        </HStack>
+      <HStack justifyContent="space-between" alignItems="center" mb={4}>
+        <VStack>
+          <Text mb={1} fontSize="md">
+            Your total balance
+          </Text>
+          <Text color="#43BAF8" fontSize="2xl" fontWeight="bold">
+            {formatter(totalAmount, currency)}
+          </Text>
+        </VStack>
+        <TouchableOpacity
+          onPress={() => {
+            // @ts-ignore
+            card?.flip({
+              duration: 300,
+              direction: "left",
+            });
+            setIsFlipped(!isFlipped);
+          }}
+        >
+          <Icon
+            as={Feather}
+            name="rotate-ccw"
+            size="xl"
+            color="#43BAF8"
+            _dark={{
+              color: "#fff",
+            }}
+          />
+        </TouchableOpacity>
+      </HStack>
 
-        <HStack space={4} pl={6}>
-          {personsWhoPayedLess.map((p, index) => (
-            <Box
-              key={`${p.id}-${index}`}
-              bgColor={BG_COLORS[p.id % BG_COLORS.length]}
-              borderBottomLeftRadius="xl"
-              borderBottomRightRadius="xl"
-              w={6}
-              height={Math.min(maxHeight, (amountPerUser - p.totalAmount) / 20)}
-            />
-          ))}
-        </HStack>
-        <HStack space={2} mt={4} flexWrap="wrap">
-          {persons.map((p) => (
-            <HStack alignItems="center" space={2} key={p.id}>
+      <CardFlip
+        ref={(card) => setCard(card)}
+        style={{
+          height: 220,
+        }}
+      >
+        <VStack justifyContent="space-between">
+          <HStack space={8}>
+            {personsWhoPayedMore.map((p, index) => (
               <Box
-                borderRadius="full"
+                key={`${p.id} -${index}`}
                 bgColor={BG_COLORS[p.id % BG_COLORS.length]}
-                w={4}
-                h={4}
+                borderTopLeftRadius="xl"
+                borderTopRightRadius="xl"
+                w={6}
+                height={Math.min(
+                  maxHeight,
+                  Math.abs(amountPerUser - p.totalAmount) / 20
+                )}
               />
-              <Text>{p.name}</Text>
-            </HStack>
-          ))}
-        </HStack>
-      </VStack>
+            ))}
+          </HStack>
+
+          <HStack space={4} pl={6}>
+            {personsWhoPayedLess.map((p, index) => (
+              <Box
+                key={`${p.id}-${index}`}
+                bgColor={BG_COLORS[p.id % BG_COLORS.length]}
+                borderBottomLeftRadius="xl"
+                borderBottomRightRadius="xl"
+                w={6}
+                height={Math.min(
+                  maxHeight,
+                  (amountPerUser - p.totalAmount) / 20
+                )}
+              />
+            ))}
+          </HStack>
+          <HStack space={2} mt={4} flexWrap="wrap">
+            {persons.map((p) => (
+              <HStack alignItems="center" space={2} key={p.id}>
+                <Box
+                  borderRadius="full"
+                  bgColor={BG_COLORS[p.id % BG_COLORS.length]}
+                  w={4}
+                  h={4}
+                />
+                <Text>{p.name}</Text>
+              </HStack>
+            ))}
+          </HStack>
+        </VStack>
+        <VStack justifyContent="space-between">
+          <Text fontSize="md">Amount Per Person:</Text>
+          <Text color="green.400" fontSize="2xl" fontWeight="bold">
+            {formatter(amountPerUser, currency)}
+          </Text>
+        </VStack>
+      </CardFlip>
     </Box>
   );
 };

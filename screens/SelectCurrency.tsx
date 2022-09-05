@@ -22,6 +22,7 @@ const SelectCurrency = () => {
   );
 
   const onPress = () => {
+    console.log("selected currency", selectedCurrency);
     if (currency) {
       updateCurrency(selectedCurrency);
       Toast.show({

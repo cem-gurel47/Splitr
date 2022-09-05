@@ -16,7 +16,7 @@ const PersonExpense = ({
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
 
   return (
-    <HStack alignItems="center" justifyContent="space-between" px={4}>
+    <HStack alignItems="center" justifyContent="space-between" px={4} mb={2}>
       <PersonExpensesBox
         onPress={() => setDeleteButtonVisible(!deleteButtonVisible)}
         expense={expense}

@@ -15,23 +15,10 @@ import {
 import { ExpenseProvider } from "@contexts/ExpenseContext";
 import { ThemeProvider } from "@contexts/ThemeContext";
 import { NotificationProvider } from "@contexts/NotificationContext";
-import { Person } from "@models/person";
 import * as SQLite from "expo-sqlite";
 import Toast from "react-native-toast-message";
 import BottomTab from "@components/BottomTab";
 import * as NavigationBar from "expo-navigation-bar";
-
-export type StackParamList = {
-  Home: undefined;
-  "Final Report": undefined;
-  "Person Expenses": Person;
-  "Add New Person": undefined;
-  "Add New Expense": {
-    personId?: number;
-  };
-  "Select Currency": undefined;
-  Settings: undefined;
-};
 
 const Tab = createBottomTabNavigator();
 

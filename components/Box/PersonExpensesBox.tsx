@@ -27,7 +27,6 @@ const PersonExpensesBox = ({ expense, showDeleteButton, onPress }: Props) => {
         p={2}
         px={4}
         bgColor="#F5F6FA"
-        mb={2}
         // borderColor="#777CEF"
         // borderWidth={1}
         borderRadius="3xl"

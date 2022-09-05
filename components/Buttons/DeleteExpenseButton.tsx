@@ -31,11 +31,7 @@ const DeleteExpenseButton = ({
         },
       }}
     >
-      <IconButton
-        variant="solid"
-        bg="transparent"
-        colorScheme="red"
-        borderRadius="full"
+      <Icon
         onPress={() => {
           deleteExpense(index, personId);
           Toast.show({
@@ -47,17 +43,13 @@ const DeleteExpenseButton = ({
             )} is removed from the expenses`,
           });
         }}
-        icon={
-          <Icon
-            as={Ionicons}
-            size="2xl"
-            name="md-remove-circle-sharp"
-            _dark={{
-              color: "white",
-            }}
-            color="red.500"
-          />
-        }
+        as={Ionicons}
+        size="2xl"
+        name="md-remove-circle-sharp"
+        _dark={{
+          color: "white",
+        }}
+        color="red.500"
       />
     </PresenceTransition>
   );

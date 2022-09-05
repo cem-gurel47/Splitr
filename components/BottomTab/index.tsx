@@ -1,15 +1,8 @@
 import React, { useContext } from "react";
+import { TouchableOpacity } from "react-native";
 import { ThemeContext } from "@contexts/ThemeContext";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import {
-  HStack,
-  Button,
-  Text,
-  Icon,
-  VStack,
-  IconButton,
-  Pressable,
-} from "native-base";
+import { HStack, Button, Text, Icon, VStack, IconButton } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
@@ -63,7 +56,7 @@ const BottomTab = (props: BottomTabBarProps) => {
           );
         }
         return (
-          <Pressable onPress={() => onPress("Final Report")} key={route}>
+          <TouchableOpacity onPress={() => onPress("Final Report")} key={route}>
             <VStack space={1} alignItems="center">
               <IconButton
                 zIndex={2000}
@@ -91,7 +84,7 @@ const BottomTab = (props: BottomTabBarProps) => {
               />
               <Text color={color}>Calculate</Text>
             </VStack>
-          </Pressable>
+          </TouchableOpacity>
         );
       })}
     </HStack>

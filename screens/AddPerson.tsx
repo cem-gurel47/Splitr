@@ -11,6 +11,7 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import Toast from "react-native-toast-message";
+import { TouchableOpacity } from "react-native";
 
 const AddPerson = () => {
   const { addNewPerson } = useContext(ExpenseContext);
@@ -69,29 +70,35 @@ const AddPerson = () => {
             Description is required
           </FormControl.ErrorMessage>
         </FormControl>
-        <Button
-          isLoading={loading}
-          isLoadingText="Loading"
-          w="100%"
-          mt={8}
-          variant="outline"
-          py={2}
-          borderRadius="2xl"
+        <TouchableOpacity
           style={{
-            borderColor: "#9196F3",
+            width: "100%",
           }}
-          onPress={onPress}
         >
-          <Text
+          <Button
+            isLoading={loading}
+            isLoadingText="Loading"
+            w="100%"
+            mt={8}
+            variant="outline"
+            py={2}
+            borderRadius="2xl"
             style={{
-              color: "#9196F3",
+              borderColor: "#9196F3",
             }}
-            fontWeight="bold"
-            fontSize="xl"
+            onPress={onPress}
           >
-            Add Person
-          </Text>
-        </Button>
+            <Text
+              style={{
+                color: "#9196F3",
+              }}
+              fontWeight="bold"
+              fontSize="xl"
+            >
+              Add Person
+            </Text>
+          </Button>
+        </TouchableOpacity>
       </Center>
     </Layout>
   );

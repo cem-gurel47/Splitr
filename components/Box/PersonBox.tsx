@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
+import { TouchableOpacity } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import {
   Box,
   Text,
-  Pressable,
   PresenceTransition,
   Icon,
   VStack,
@@ -26,9 +26,9 @@ export default function PersonBox({
   const { name, totalAmount } = person;
 
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => navigation.navigate("Person Expenses", person)}
-      w="49%"
+      style={{ width: "49%" }}
     >
       <PresenceTransition
         visible={true}
@@ -65,6 +65,6 @@ export default function PersonBox({
           </HStack>
         </Box>
       </PresenceTransition>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
