@@ -12,6 +12,7 @@ const ReportChart = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { persons, currency, amountPerUser, totalAmount } =
     useContext(ExpenseContext);
+  const [height, setHeight] = useState(220);
 
   const personsWhoPayedLess = persons.filter(
     (person) => person.totalAmount < amountPerUser
@@ -22,6 +23,7 @@ const ReportChart = () => {
   );
 
   const maxHeight = 32;
+  console.log(height);
 
   return (
     <Box
@@ -66,10 +68,15 @@ const ReportChart = () => {
       <CardFlip
         ref={(card) => setCard(card)}
         style={{
-          height: 220,
+          height: height,
         }}
       >
-        <VStack justifyContent="space-between">
+        <VStack
+          justifyContent="space-between"
+          onLayout={(event) => {
+            setHeight(event.nativeEvent.layout.height);
+          }}
+        >
           <HStack space={8}>
             {personsWhoPayedMore.map((p, index) => (
               <Box

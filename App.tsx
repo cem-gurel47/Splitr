@@ -84,6 +84,7 @@ export default function App() {
                 initialRouteName="Home"
                 screenOptions={{
                   headerShown: false,
+                  tabBarHideOnKeyboard: true,
                 }}
                 tabBar={(props) => <BottomTab {...props} />}
               >

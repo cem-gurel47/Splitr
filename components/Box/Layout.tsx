@@ -1,10 +1,8 @@
-import { Box } from "native-base";
+import { Box, IBoxProps } from "native-base";
 
-type Props = {
-  children: React.ReactNode;
-  style?: any;
+interface Props extends IBoxProps {
   onPress?: () => void;
-};
+}
 
 export default function Layout({ children, style, onPress }: Props) {
   return (

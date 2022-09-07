@@ -43,7 +43,7 @@ const Settings = () => {
       },
     },
     {
-      label: "Delete All Persons",
+      label: "Delete All People",
       icon: (
         <Icon
           as={AntDesign}
