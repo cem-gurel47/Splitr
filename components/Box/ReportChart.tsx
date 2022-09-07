@@ -23,7 +23,6 @@ const ReportChart = () => {
   );
 
   const maxHeight = 32;
-  console.log(height);
 
   return (
     <Box

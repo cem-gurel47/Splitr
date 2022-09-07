@@ -22,7 +22,6 @@ const SelectCurrency = () => {
   );
 
   const onPress = () => {
-    console.log("selected currency", selectedCurrency);
     if (currency) {
       updateCurrency(selectedCurrency);
       Toast.show({
@@ -32,6 +31,11 @@ const SelectCurrency = () => {
       });
     } else {
       setDbCurrency(selectedCurrency);
+      Toast.show({
+        type: "success",
+        text1: "Currency selected",
+        text2: "Your currency has been set to " + selectedCurrency,
+      });
     }
 
     navigation.navigate("Home");

@@ -28,7 +28,6 @@ export async function schedulePushNotification() {
       repeats: true,
     },
   });
-  console.log("notif id on scheduling", id);
 
   return id;
 }

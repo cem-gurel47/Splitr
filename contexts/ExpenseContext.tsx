@@ -246,8 +246,6 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     // ]);
   }, []);
 
-  console.log(persons, currency);
-
   return (
     <ExpenseContext.Provider
       value={{

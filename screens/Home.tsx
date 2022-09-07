@@ -101,7 +101,6 @@ export default function Home() {
                 refreshing={refreshing}
                 onRefresh={() => {
                   setRefreshing(true);
-                  console.log(loading);
                   getExpenses();
                   setRefreshing(false);
                 }}

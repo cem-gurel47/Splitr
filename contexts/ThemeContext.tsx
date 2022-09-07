@@ -63,7 +63,6 @@ export const ThemeProvider = ({ children, db }: Props) => {
             }
             setThemeLoading(false);
           } else {
-            console.log("no theme found, creating default theme");
             createDefaultTheme();
           }
         },
@@ -77,20 +76,16 @@ export const ThemeProvider = ({ children, db }: Props) => {
 
   const dropThemeTable = () => {
     db.transaction((tx) => {
-      tx.executeSql("DROP TABLE theme", [], () => {
-        console.log("dropped");
-      });
+      tx.executeSql("DROP TABLE theme", [], () => {});
     });
   };
 
   const updateTheme = (theme: "light" | "dark") => {
-    console.log("clicked");
     db.transaction((tx) => {
       tx.executeSql(
         "UPDATE theme SET theme = ? where id = ?",
         [theme, 1],
         () => {
-          console.log("theme updated");
           setTheme(theme);
           toggleColorMode();
         }
