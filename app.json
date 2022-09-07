@@ -23,7 +23,6 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.bomdcze.splitr"
     },
     "web": {
