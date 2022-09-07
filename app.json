@@ -2,7 +2,7 @@
   "expo": {
     "name": "splitr",
     "slug": "splitr",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.bomdcze.splitr"
     },
     "web": {
