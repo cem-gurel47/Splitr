@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { TouchableOpacity, Platform, Keyboard } from "react-native";
+import { TouchableOpacity, Platform, Keyboard, Alert } from "react-native";
 import { ThemeContext } from "@contexts/ThemeContext";
 import { ExpenseContext } from "@contexts/ExpenseContext";
 import { HStack, Button, Text, Icon, VStack, IconButton } from "native-base";
@@ -13,7 +13,7 @@ const BottomTab = (props: BottomTabBarProps) => {
   const { state } = props;
   const navigation = useNavigation();
   const { themeLoading } = useContext(ThemeContext);
-  const { loading, currency } = useContext(ExpenseContext);
+  const { loading, currency, persons } = useContext(ExpenseContext);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -36,6 +36,24 @@ const BottomTab = (props: BottomTabBarProps) => {
 
   //const { navigation, state } = props;
   const onPress = (routeName: "Home" | "Final Report" | "Settings") => {
+    if (persons.length < 2 && routeName === "Final Report") {
+      Alert.alert(
+        "Not enough data!",
+        "You need to have at least 2 persons to generate a report. You can add more persons in the settings tab.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => {},
+          },
+          {
+            text: "Go to Settings",
+            onPress: () => navigation.navigate("Settings"),
+            style: "cancel",
+          },
+        ]
+      );
+      return;
+    }
     navigation.navigate(routeName);
   };
 
@@ -79,7 +97,7 @@ const BottomTab = (props: BottomTabBarProps) => {
             </Button>
           );
         }
-        return (
+        return Platform.OS === "android" ? (
           <TouchableOpacity
             onPress={() => {
               onPress("Final Report");
@@ -91,6 +109,32 @@ const BottomTab = (props: BottomTabBarProps) => {
                 onPress("Final Report");
               }}
               bgColor="#787DE8"
+              borderWidth={2}
+              borderColor="white"
+              borderRadius="full"
+              icon={
+                <Icon
+                  as={MaterialIcons}
+                  name="calculate"
+                  size="3xl"
+                  color="white"
+                />
+              }
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              onPress("Final Report");
+            }}
+            key={route}
+          >
+            <IconButton
+              onPress={() => {
+                onPress("Final Report");
+              }}
+              bgColor="#787DE8"
+              marginTop={-10}
               borderWidth={2}
               borderColor="white"
               borderRadius="full"

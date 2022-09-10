@@ -1,16 +1,43 @@
-import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import { ExpenseContext } from "@contexts/ExpenseContext";
+import { TouchableOpacity, Alert } from "react-native";
 import { HStack, Icon, Text } from "native-base";
 
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { DeleteUserAlert } from "@components/Alerts";
+import Toast from "react-native-toast-message";
 
 const PersonExpenseHeader = ({ name, id }: { name: string; id: number }) => {
-  const [alertModalVisible, setAlertModalVisible] = useState(false);
   const navigation = useNavigation();
+  const { deletePerson } = useContext(ExpenseContext);
+
   const goBack = () => {
     navigation.navigate("Home");
+  };
+
+  const onDelete = () => {
+    Alert.alert(
+      `Delete ${name}?`,
+      `This will remove all data relating to ${name} and his/her expenses. This action cannot be reversed. Deleted data can not be recovered.`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            deletePerson(id);
+            navigation.navigate("Home");
+            Toast.show({
+              type: "success",
+              text1: `${name} is deleted!`,
+            });
+          },
+          style: "destructive",
+        },
+      ]
+    );
   };
 
   return (
@@ -23,7 +50,7 @@ const PersonExpenseHeader = ({ name, id }: { name: string; id: number }) => {
         borderBottomLeftRadius={60}
         borderBottomRightRadius={60}
         pt={4}
-        pb={12}
+        pb={4}
         px={6}
         mb={4}
         justifyContent="space-between"
@@ -35,16 +62,10 @@ const PersonExpenseHeader = ({ name, id }: { name: string; id: number }) => {
         <Text color="white" fontWeight="bold" fontSize="xl">
           {name}
         </Text>
-        <TouchableOpacity onPress={() => setAlertModalVisible(true)}>
+        <TouchableOpacity onPress={onDelete}>
           <Icon as={AntDesign} size="xl" name="delete" color="white" />
         </TouchableOpacity>
       </HStack>
-      <DeleteUserAlert
-        isOpen={alertModalVisible}
-        setIsOpen={setAlertModalVisible}
-        name={name}
-        id={id}
-      />
     </>
   );
 };

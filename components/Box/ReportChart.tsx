@@ -67,7 +67,7 @@ const ReportChart = () => {
       <CardFlip
         ref={(card) => setCard(card)}
         style={{
-          height: height,
+          height: height + 10,
         }}
       >
         <VStack
@@ -84,9 +84,11 @@ const ReportChart = () => {
                 borderTopLeftRadius="xl"
                 borderTopRightRadius="xl"
                 w={6}
-                height={Math.min(
-                  maxHeight,
-                  Math.abs(amountPerUser - p.totalAmount) / 20
+                // the max height of bar is 32, so we need to calculate the height of the bar
+                // based on the amount of money that person payed
+                h={Math.min(
+                  (p.totalAmount / amountPerUser) * maxHeight,
+                  maxHeight
                 )}
               />
             ))}

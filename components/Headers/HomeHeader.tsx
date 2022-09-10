@@ -11,43 +11,31 @@ const HomeHeader = (props: Props) => {
   const { totalAmount, currency } = useContext(ExpenseContext);
   // const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   return (
-    <VStack safeArea>
-      <Center
+    <VStack
+      safeArea
+      style={{
+        backgroundColor: "#787DE8",
+      }}
+      borderBottomLeftRadius={60}
+      borderBottomRightRadius={60}
+      justifyContent="space-between"
+      alignItems="center"
+      pt={0}
+      px={6}
+      mb={4}
+    >
+      <Text
+        fontSize="xl"
+        mb={1}
         style={{
-          backgroundColor: "#787DE8",
+          color: "#98C1F7",
         }}
-        borderBottomLeftRadius={60}
-        borderBottomRightRadius={60}
-        pb={8}
-        pt={0}
-        px={6}
-        mb={4}
       >
-        {/* <Icon
-          onPress={() => setIsDrawerOpen(true)}
-          as={Feather}
-          size="6"
-          name="menu"
-          color="white"
-          _dark={{
-            color: "warmGray.50",
-          }}
-        /> */}
-        <Text
-          fontSize="xl"
-          mb={1}
-          style={{
-            color: "#98C1F7",
-          }}
-        >
-          Your total expenses
-        </Text>
-        <Text color="white" fontWeight="extrabold" fontSize="xl">
-          {formatter(totalAmount, currency)}
-        </Text>
-      </Center>
-
-      {/* <Drawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} /> */}
+        Your total expenses
+      </Text>
+      <Text color="white" fontWeight="extrabold" fontSize="xl">
+        {formatter(totalAmount, currency)}
+      </Text>
     </VStack>
   );
 };

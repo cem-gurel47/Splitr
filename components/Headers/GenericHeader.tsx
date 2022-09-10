@@ -20,7 +20,7 @@ const AddPersonHeader = ({ label }: { label: string }) => {
       borderBottomLeftRadius={60}
       borderBottomRightRadius={60}
       pt={4}
-      pb={12}
+      pb={4}
       px={6}
       mb={4}
       justifyContent="space-between"

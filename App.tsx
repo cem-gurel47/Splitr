@@ -54,19 +54,23 @@ export const db = openDatabase();
 export default function App() {
   const [barVisibility, setBarVisibility] = useState<undefined | string>();
 
-  NavigationBar.addVisibilityListener(({ visibility }) => {
-    if (visibility === "visible") {
-      setBarVisibility(visibility);
-    }
-  });
+  if (Platform.OS === "android") {
+    NavigationBar.addVisibilityListener(({ visibility }) => {
+      if (visibility === "visible") {
+        setBarVisibility(visibility);
+      }
+    });
+  }
 
   const navigationConfig = async () => {
-    // Just incase it is not hidden
-    NavigationBar.setBackgroundColorAsync("white");
-    NavigationBar.setButtonStyleAsync("dark");
+    if (Platform.OS === "android") {
+      // Just incase it is not hidden
+      NavigationBar.setBackgroundColorAsync("white");
+      NavigationBar.setButtonStyleAsync("dark");
 
-    // Hide it
-    NavigationBar.setVisibilityAsync("hidden");
+      // Hide it
+      NavigationBar.setVisibilityAsync("hidden");
+    }
   };
 
   useEffect(() => {

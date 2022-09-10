@@ -56,46 +56,61 @@ export const ExpenseProvider = ({ children, db }: Props) => {
 
   const getExpenses = () => {
     db.transaction((tx) => {
-      tx.executeSql("SELECT * FROM persons", [], (_, { rows }) => {
-        const parsedExpensesArray = rows._array.map((row) => {
-          const parsed = JSON.parse(row.data);
-          return {
-            id: row.id,
-            name: parsed.name,
-            expenses: parsed.expenses,
-            totalAmount: parsed.expenses.reduce(
-              (acc: number, curr: { amount: number }) => {
-                return acc + curr.amount;
-              },
-              0
-            ),
-          };
-        });
-        setPersons(parsedExpensesArray);
+      tx.executeSql(
+        "SELECT * FROM persons",
+        [],
+        (_, { rows }) => {
+          const parsedExpensesArray = rows._array.map((row) => {
+            const parsed = JSON.parse(row.data);
+            return {
+              id: row.id,
+              name: parsed.name,
+              expenses: parsed.expenses,
+              totalAmount: parsed.expenses.reduce(
+                (acc: number, curr: { amount: number }) => {
+                  return acc + curr.amount;
+                },
+                0
+              ),
+            };
+          });
+          setPersons(parsedExpensesArray);
 
-        const totalAmount = parsedExpensesArray.reduce((acc, person) => {
-          return acc + person.totalAmount;
-        }, 0);
+          const totalAmount = parsedExpensesArray.reduce((acc, person) => {
+            return acc + person.totalAmount;
+          }, 0);
 
-        const amountPerUser = totalAmount / parsedExpensesArray.length;
+          const amountPerUser = totalAmount / parsedExpensesArray.length;
 
-        setTotalAmount(totalAmount);
-        setAmountPerUser(amountPerUser);
-        setLoading(false);
+          setTotalAmount(totalAmount);
+          setAmountPerUser(amountPerUser);
+          setLoading(false);
+        },
+        (a, b) => {
+          console.log(a, b);
+          return false;
+        }
+      );
+    });
+  };
+
+  const dropPersonTable = () => {
+    db.transaction((tx) => {
+      tx.executeSql("drop table persons", [], () => {
+        console.log("person table dropped");
       });
     });
   };
 
-  const dropTable = () => {
+  const createPersonTable = () => {
     db.transaction((tx) => {
-      tx.executeSql("drop table persons", []);
-    });
-  };
-
-  const createTable = () => {
-    db.transaction((tx) => {
+      // should autoincrement id
       tx.executeSql(
-        "create table if not exists persons (id integer primary key not null, data string);"
+        "create table if not exists persons (id integer primary key not null, data string);",
+        [],
+        () => {
+          console.log("created persons table");
+        }
       );
     });
   };
@@ -103,7 +118,15 @@ export const ExpenseProvider = ({ children, db }: Props) => {
   const createCurrencyTable = () => {
     db.transaction((tx) => {
       tx.executeSql(
-        "create table if not exists currency (id integer primary key not null, currency string);"
+        "create table if not exists currency (id integer primary key not null, currency string);",
+        [],
+        () => {
+          console.log("created currency table");
+        },
+        (a, b) => {
+          console.log(a, b);
+          return false;
+        }
       );
     });
   };
@@ -138,6 +161,14 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     });
   };
 
+  const dropCurrencyTable = () => {
+    db.transaction((tx) => {
+      tx.executeSql("drop table currency", [], () => {
+        console.log("dropped currency table");
+      });
+    });
+  };
+
   const addNewPerson = (name: string) => {
     db.transaction((tx) => {
       tx.executeSql("insert into persons (data) values (?)", [
@@ -154,22 +185,22 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     getExpenses();
   };
 
-  const addData = (name: string, expensesArray: any[]) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "insert into persons (data) values (?)",
-        [
-          JSON.stringify({
-            name,
-            expenses: expensesArray,
-          }),
-        ],
-        (_, { rows }) => {
-          // setExpenses(rows._array);
-        }
-      );
-    });
-  };
+  // const addData = (name: string, expensesArray: any[]) => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       "insert into persons (data) values (?)",
+  //       [
+  //         JSON.stringify({
+  //           name,
+  //           expenses: expensesArray,
+  //         }),
+  //       ],
+  //       (_, { rows }) => {
+  //         // setExpenses(rows._array);
+  //       }
+  //     );
+  //   });
+  // };
 
   const deleteEveryPerson = () => {
     db.transaction((tx) => {
@@ -210,40 +241,13 @@ export const ExpenseProvider = ({ children, db }: Props) => {
     }
   };
 
+  console.log(persons, currency, loading);
+
   useEffect(() => {
-    createTable();
+    createPersonTable();
     createCurrencyTable();
     getCurrency();
     getExpenses();
-    // addData("Cem", [
-    //   {
-    //     description: "Food",
-    //     amount: 100,
-    //   },
-    //   {
-    //     description: "Rent",
-    //     amount: 1500,
-    //   },
-    //   {
-    //     description: "Car",
-    //     amount: 1000,
-    //   },
-    // ]);
-
-    // addData("John", [
-    //   {
-    //     description: "Food",
-    //     amount: 50,
-    //   },
-    //   {
-    //     description: "Electricity",
-    //     amount: 100,
-    //   },
-    //   {
-    //     description: "Gas",
-    //     amount: 50,
-    //   },
-    // ]);
   }, []);
 
   return (

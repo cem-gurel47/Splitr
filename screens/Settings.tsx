@@ -1,5 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
+import { Alert } from "react-native";
 import { ThemeContext } from "@contexts/ThemeContext";
+import { ExpenseContext } from "@contexts/ExpenseContext";
 import Layout from "@components/Box/Layout";
 import { Icon, VStack, HStack, Switch } from "native-base";
 import {
@@ -9,20 +11,16 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import {
-  DeleteAllExpensesAlert,
-  DeleteAllUsersAlert,
-} from "@components/Alerts";
 import GenericHeader from "@components/Headers/GenericHeader";
 import Text from "@components/ThemableText";
+import Toast from "react-native-toast-message";
 
 const Settings = () => {
-  const { theme, setTheme, updateTheme } = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
+  const { deleteEveryPerson, persons, updatePerson, getExpenses } =
+    useContext(ExpenseContext);
+
   const navigation = useNavigation();
-  const [deleteAllUsersModalVisible, setDeleteAllUsersModalVisible] =
-    useState(false);
-  const [deleteAllExpensesModalVisible, setDeleteAllExpensesModalVisible] =
-    useState(false);
 
   const SETTINGS_ITEMS = [
     {
@@ -56,7 +54,28 @@ const Settings = () => {
         />
       ),
       onPress: () => {
-        setDeleteAllUsersModalVisible(true);
+        Alert.alert(
+          "Delete All People",
+          "This will remove all data relating to users and their expenses. This action cannot be reversed. Deleted data can not be recovered.",
+          [
+            {
+              text: "Cancel",
+              onPress: () => {},
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              style: "destructive",
+              onPress: () => {
+                deleteEveryPerson();
+                Toast.show({
+                  type: "success",
+                  text1: "All users and expenses are deleted!",
+                });
+              },
+            },
+          ]
+        );
       },
     },
     {
@@ -73,7 +92,31 @@ const Settings = () => {
         />
       ),
       onPress: () => {
-        setDeleteAllExpensesModalVisible(true);
+        Alert.alert(
+          "Delete All Expenses",
+          "This will remove all data relating to expenses but user profiles will be kept safe. This action cannot be reversed. Deleted data can not be recovered.",
+          [
+            {
+              text: "Cancel",
+              onPress: () => {},
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              style: "destructive",
+              onPress: () => {
+                persons.forEach((person) => {
+                  updatePerson(person.id, person.name, []);
+                });
+                getExpenses();
+                Toast.show({
+                  type: "success",
+                  text1: "All expenses are deleted!",
+                });
+              },
+            },
+          ]
+        );
       },
     },
     {
@@ -112,7 +155,7 @@ const Settings = () => {
       rightComponent: (
         <Switch
           colorScheme={"blue"}
-          size="lg"
+          size="md"
           isChecked={theme === "light"}
           aria-label={
             theme === "light" ? "switch to dark mode" : "switch to light mode"
@@ -164,14 +207,6 @@ const Settings = () => {
           </HStack>
         ))}
       </VStack>
-      <DeleteAllExpensesAlert
-        isOpen={deleteAllExpensesModalVisible}
-        setIsOpen={setDeleteAllExpensesModalVisible}
-      />
-      <DeleteAllUsersAlert
-        isOpen={deleteAllUsersModalVisible}
-        setIsOpen={setDeleteAllUsersModalVisible}
-      />
     </Layout>
   );
 };

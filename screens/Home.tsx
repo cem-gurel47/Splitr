@@ -77,6 +77,7 @@ export default function Home() {
         </ImageBackground>
       ) : (
         <>
+          <HomeHeader />
           <FlatList
             numColumns={2}
             data={persons}
@@ -90,12 +91,10 @@ export default function Home() {
             )}
             stickyHeaderIndices={[0]}
             keyExtractor={(item) => `${item.id}`}
-            ListHeaderComponent={() => <HomeHeader />}
             ListFooterComponentStyle={{
               paddingLeft: 25,
               paddingRight: 25,
             }}
-            // ListFooterComponent={() => <CalculateBackgroundBox />}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}

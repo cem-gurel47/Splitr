@@ -1,15 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { FlatList } from "react-native";
 import { ExpenseContext } from "@contexts/ExpenseContext";
-import {
-  Text,
-  HStack,
-  Center,
-  Icon,
-  IconButton,
-  Button,
-  Container,
-} from "native-base";
+import { Text, Center } from "native-base";
 import Layout from "@components/Box/Layout";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Person } from "@models/person";
