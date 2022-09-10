@@ -33,6 +33,7 @@ const PersonExpenseHeader = ({ name, id }: { name: string; id: number }) => {
               type: "success",
               text1: `${name} is deleted!`,
             });
+            navigation.navigate("Home");
           },
           style: "destructive",
         },
